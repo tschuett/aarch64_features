@@ -7,8 +7,6 @@ pub(crate) fn check_availability() -> bool {
         return false;
     }
     true
-
-    //let caps2 = unsafe { libc::getauxval(AT_HWCAP2) };
 }
 
 fn read_register(reg: &str) -> u64 {
@@ -18,14 +16,14 @@ fn read_register(reg: &str) -> u64 {
 
 use std::arch::asm;
 
-fn read_register(reg: &str) -> u64 {
-    let mut tmp: u64;
-    unsafe {
-        asm!("mrs {tmp}, ID_AA64ISAR0_EL1", tmp = out(reg) _);
-
-        asm!("mrs {tmp}, {reg}", tmp = out(reg) _);
-    }
-}
+//fn read_register(reg: &str) -> u64 {
+//    let mut tmp: u64;
+//    unsafe {
+//        asm!("mrs {tmp}, ID_AA64ISAR0_EL1", tmp = out(reg) _);
+//
+//        asm!("mrs {tmp}, {reg}", tmp = out(reg) _);
+//    }
+//}
 
 // https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register
 

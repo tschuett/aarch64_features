@@ -591,12 +591,12 @@ use crate::linux_aarch64::cpu::check_availability;
 #[cfg(not(target_arch = "aarch64"))]
 use crate::generic::cpu::check_availability;
 
-#[cfg(all(target_arch = "aarch64", target_os = "macos"))]
+#[cfg(all(target_arch = "aarch64", target_os = "linux"))]
 mod linux_aarch64 {
     pub(crate) mod cpu;
 }
 
-#[cfg(all(target_arch = "aarch64", target_os = "linux"))]
+#[cfg(all(target_arch = "aarch64", target_os = "macos"))]
 mod macos_aarch64 {
     pub(crate) mod cpu;
 }

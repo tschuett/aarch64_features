@@ -2,13 +2,12 @@
 
 # aarch64_features
 
-
+The Linux kernel only exposes a subset of the features to userspace,
+see [feature
+registers](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst).
 
 supported configurations
 
 - Linux AARCH64
 - Macos AARCH64
 - anything not AARCH64
-
-
-https://blog.rust-lang.org/2022/02/24/Rust-1.59.0.html
