@@ -1,0 +1,9 @@
+[package]
+name = "aarch64_features"
+version = "0.1.0" # remember to update html_root_url
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libc = "0.2.126"
