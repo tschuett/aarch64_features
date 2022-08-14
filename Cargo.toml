@@ -8,7 +8,7 @@ repository = "https://github.com/tschuett/aarch64_features"
 readme = "README.md"
 keywords = ["features, AARCH64"]
 categories = ["feature detection"]
-
+exclude = [".gitignore", ".github/workflows/rust.yml", "src/main.rs", "Cargo.lock"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
