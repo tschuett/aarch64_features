@@ -1,9 +1,27 @@
 ![Rust](https://github.com/tschuett/aarch64_features/workflows/Rust/badge.svg) ![MSRV](https://img.shields.io/badge/msrv-1.63-red)
 
-# aarch64_features - A feature detector for AArch64 features, i.e, FEAT_LSE?
+# aarch64_features - A feature detector for AArch64 features, i.e., FEAT_LSE?
 
 This crate checks for available features of AArch64 cores. It strives
 for completeness instead of focussing on the favorite features.
+
+Update your Cargo.toml
+ ```toml
+ [dependencies]
+ aarch64_features = "0.1.0"
+ ```
+and then
+ ```rust
+ use aarch64_features::{check_features, Feature};
+
+ fn main() {
+   let features = check_features();
+
+   if features.contains(&Feature::FEAT_LSE) {
+     println!("happy");
+   }
+}
+ ```
 
 supported configurations:
 
