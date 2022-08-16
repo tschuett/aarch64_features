@@ -509,44 +509,6 @@ pub enum Feature {
 
     /// Advanced SIMD Extension
     FEAT_AdvSIMD,
-    // 2020 Architecture Extensions
-
-    // Alternate floating-point behavior
-    // FEAT_AFP,
-    // Support for the HCRX_EL2 register
-    // FEAT_HCX,
-    // Larger physical address for 4KB and 16KB translation granules
-    // FEAT_LPA2,
-    // Support for 64 byte loads/stores without return
-    // FEAT_LS64,
-    // Support for 64-byte stores with return
-    // FEAT_LS64_V,
-    // Support for 64-byte EL0 stores with return
-    // FEAT_LS64_ACCDATA,
-    // MTE Asymmetric Fault Handling
-    // FEAT_MTE3,
-    // Support for SCTLR_ELx.EPAN
-    // FEAT_PAN3,
-    // Armv8.7 PMU Extensions
-    // FEAT_PMUv3p7,
-    // Increased precision of Reciprocal Estimate and Reciprocal Square Root Estimate
-    // FEAT_RPRES,
-    // Realm Management Extension
-    // FEAT_RME,
-    // Armv8.7 SPE
-    // FEAT_SPEv1p2,
-    // WFE and WFI instructions with timeout
-    // FEAT_WFxT,
-    // WFE and WFI instructions with timeout version 2
-    // FEAT_WFxT2,
-    // XS attribute
-    // FEAT_XS,
-    // Branch Record Buffer Extensions
-    // FEAT_BRBE,
-    // 2021 Architecture Extensions
-
-    // Non-maskable Interrupts
-    // FEAT_GICv3_NMI,
 }
 
 /// test for all aarch64 features
@@ -583,13 +545,13 @@ pub fn get_description(feature: &Feature) -> Option<String> {
 }
 
 #[cfg(all(target_arch = "aarch64", target_os = "macos"))]
-use crate::macos_aarch64::cpu::check_availability;
+use crate::macos_aarch64::cpu::{check_availability, is_exposed_to_userspace};
 
 #[cfg(all(target_arch = "aarch64", target_os = "linux"))]
-use crate::linux_aarch64::cpu::check_availability;
+use crate::linux_aarch64::cpu::{check_availability, is_exposed_to_userspace};
 
 #[cfg(not(target_arch = "aarch64"))]
-use crate::generic::cpu::check_availability;
+use crate::generic::cpu::{check_availability, is_exposed_to_userspace};
 
 #[cfg(all(target_arch = "aarch64", target_os = "linux"))]
 mod linux_aarch64 {
@@ -601,6 +563,7 @@ mod macos_aarch64 {
     pub(crate) mod cpu;
 }
 
+mod aarch64;
 mod cpu_info;
 mod features_list;
 

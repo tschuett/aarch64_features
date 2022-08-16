@@ -1,29 +1,38 @@
+use crate::Feature;
+use libc::AT_HWCAP;
+use libc::HWCAP_CPUID;
 // MIDR_EL1
+
+// checked at 15.8.2022 (non-exhaustive)
+const EXPOSED_FEATURES: &[Feature] = &[
+    Feature::FEAT_FHM,
+    Feature::FEAT_AES,
+    Feature::FEAT_PMULL,
+    Feature::FEAT_LSE,
+    Feature::FEAT_FlagM2,
+    Feature::FEAT_DotProd,
+    Feature::FEAT_SM4,
+    Feature::FEAT_SM3,
+    Feature::FEAT_SHA3,
+    Feature::FEAT_RDM,
+    Feature::FEAT_SHA1,
+    Feature::FEAT_SHA256,
+    Feature::FEAT_SHA3,
+    Feature::FEAT_RNG,
+];
 
 /// see https://www.kernel.org/doc/html/latest/arm64/cpu-feature-registers.html
 pub(crate) fn check_availability() -> bool {
     let caps = unsafe { libc::getauxval(AT_HWCAP) };
-    if !(caps & HWCAP_CPUID) {
+    if (caps & HWCAP_CPUID) != 0 {
         return false;
     }
     true
 }
 
-fn read_register(reg: &str) -> u64 {
-    use core::arch::aarch64::__rsr64;
-    __rsr64(reg)
+pub(crate) fn is_exposed_to_userspace(feat: Feature) -> bool {
+    EXPOSED_FEATURES.contains(&feat)
 }
-
-use std::arch::asm;
-
-//fn read_register(reg: &str) -> u64 {
-//    let mut tmp: u64;
-//    unsafe {
-//        asm!("mrs {tmp}, ID_AA64ISAR0_EL1", tmp = out(reg) _);
-//
-//        asm!("mrs {tmp}, {reg}", tmp = out(reg) _);
-//    }
-//}
 
 // https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register
 

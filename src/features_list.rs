@@ -1,3 +1,4 @@
+use crate::is_exposed_to_userspace;
 use crate::{
     cpu_info::{CPUInfo, Register},
     Feature,
@@ -17,7 +18,9 @@ pub(super) fn get_features() -> HashSet<Feature> {
 
     for feature in AARCH64_FEATURES {
         if let Some(feat) = feature.matches(&cpu_info) {
-            features.insert(feat);
+            if is_exposed_to_userspace(feat) {
+                features.insert(feat);
+            }
         }
     }
 
@@ -290,58 +293,6 @@ declare_features!(
 
     // Armv9.3
     (FEAT_BRBEv1p1,    Armv9_3,  ID_AA64DFR0_EL1,  RegisterMatch(52..=55, Value(0b0010)),       Fill,                                      Jump,      "Branch Record Buffer Extension"),
-
-
-//
-    //(FEAT_CP15SDISABLE2, "CP15SDISABLE2"
-
-    // FEAT_LSE
-//   One(20..=23, Value(0b0010))
-//   // FEAT_FPAC
-//   Or(4..=7, Or(0b0100, 0b0101), 8..=11, Or(0b0100, 0b0101))
-//   // FEAT_PAUTH2
-//   Or((4..=7, Value(0b0011)), (8..=11, Value(0b0011)))
-
-    // Armv8.6
-
-//    (FEAT_DGH, ID_AA64ISAR1_EL1, 48, 51, Value(0b0001), Unknown, "Data Gathering Hint"),
-//    (FEAT_ETS, ID_AA64MMFR1_EL1, 36, 39, Value(0b0001), Unknown, "Enhanced Translation Synchronization"),
-//    (FEAT_BF16, ID_AA64ZFR0_EL1, 20, 23, Value(0b0001), Float, "BFloat16 instructions"),
-//    (FEAT_I8MM, ID_AA64ZFR0_EL1, 44, 47, Value(0b0001), Unknown, "Int8 matrix multiplication"),
-    //    (FEAT_PAuth2, ID_AA64ISAR1_EL1, 4, 7, Value(0b0011), Unknown ,"Enhancements to pointer authentication"),
-    // WHAT the F*
-//    (FEAT_FPAC, ID_AA64ISAR1_EL1, 4, 7, Or(0b0100, 0b0101), Unknown, "Faulting on AUT* instructions"),
-//    (FEAT_FPAC, ID_AA64ISAR1_EL1, 8, 11, Or(0b0100, 0b0101), Unknown, "Faulting on AUT* instructions"),
-//    // Armv8.7
-//    (FEAT_AFP, ID_AA64MMFR1_EL1, 44, 47, Value(0b0001), Float, "Alternate floating-point behavior"),
-//    (FEAT_RPRES, ID_AA64ISAR2_EL1, 4, 7, Value(0b0001), Float, "Increased precision of Reciprocal Estimate and Reciprocal Square Root Estimate"),
-//    (FEAT_LS64, ID_AA64ISAR1_EL1, 60, 63, Value(0b0001), Atomics, "Support for 64 byte loads/stores"),
-//    (FEAT_LS64_V, ID_AA64ISAR1_EL1, 60, 63, Value(0b0010), Atomics, "Support for 64 byte loads/stores"),
-//    (FEAT_LS64_ACCDATA, ID_AA64ISAR1_EL1, 60, 63, Value(0b0011), Atomics, "Support for 64 byte loads/stores"),
-//    (FEAT_WFxT, ID_AA64ISAR2_EL1, 0, 3, Value(0b0001), Unknown, "WFE and WFI instructions with timeout"),
-//    (FEAT_HCX, ID_AA64MMFR1_EL1, 40, 43, Value(0b0001), Unknown, "Support for the HCRX_EL2 register"),
-//    //(FEAT_LPA2, ID_AA64MMFR0_EL1, "Larger physical address for 4KB and 16KB translation granules"),
-//    (FEAT_XS, ID_AA64ISAR1_EL1, 56, 59, Value(0b0001), Unknown, "XS attribute"),
-//    (FEAT_PMUv3p7, ID_AA64DFR0_EL1, 8, 11, Value(0b0111), Unknown, "Armv8.7 PMU extensions"),
-//    (FEAT_SPEv1p2, ID_AA64DFR0_EL1, 32, 35, Value(0b0011),Unknown,  "Armv8.7 SPE features"),
-
-//    // FEAT_ETS
-//    
-//     // SVE
-//     (FEAT_SVE, ID_AA64PFR0_EL1, 32, 35, Value(0b0001), Sve, "SVE"),
-//     (FEAT_SVE2, ID_AA64ZFR0_EL1, 0, 3, Value(0b0001), Sve, "SVE 2"),
-//     (FEAT_SVE_AES, ID_AA64ZFR0_EL1, 4, 7, Value(0b0001), Sve, "SVE 2 AES"),
-//     (FEAT_SVE_BitPerm, ID_AA64ZFR0_EL1, 16, 19, Value(0b0001), Sve, "SVE 2 BitPerm"),
-//     (FEAT_SVE_SHA3, ID_AA64ZFR0_EL1, 32, 35, Value(0b0001), Sve, "SVE 2 SHA3"),
-//     (FEAT_SVE_SM4, ID_AA64ZFR0_EL1, 40, 43, Value(0b0001), Sve, "SVE 2 SM4"),
-//     (FEAT_F32MM, ID_AA64ZFR0_EL1, 52, 55, Value(0b0001), Sve, "SVE FP32 single-precision floating-point matrix multiplication"),
-//     (FEAT_F64MM, ID_AA64ZFR0_EL1, 56, 59, Value(0b0001), Sve, "SVE FP64 double-precision floating-point matrix multiplication"),
-
-//    (FEAT_SME,  Armv9_2, ID_AA64PFR1_EL1, RegisterMatch(24..=27, Value(0b0001)), Fill, Sve, "Scalable Matrix Extension"),
-//    (FEAT_BRBE, Armv9_2, ID_AA64DFR0_EL1, RegisterMatch(52..=55, Value(0b0001)), Fill, Unknown, "Branch Record Buffer Extension"),
-//    (FEAT_TRBE, Armv9_2, ID_AA64DFR0_EL1, RegisterMatch(44..=47, Value(0b0001)), Fill, Unknown, "Trace Buffer Extension"),
-//    (FEAT_RME,  Armv9_2, ID_AA64ISAR0_EL1,RegisterMatch(24..=27, Value(0b0001)), Fill, Unknown, "Transactional Memory Extension"),
-//    (FEAT_ETE,  Armv9_2, ID_AA64DFR0_EL1, RegisterMatch(4..=7,   Value(0b0001)), Fill, Unknown, "Embedded Trace Extension"),
-
-        //(FEAT_PCSRv8, "PC Sample-based Profiling Extension"
 );
+
+// FIXME: missing CRC32 [19-16]

@@ -14,7 +14,7 @@ fn main() {
 
         println!("let features = vec![");
         for feature in features {
-            println!("  {},", feature.to_string());
+            println!("  {:?},", feature);
         }
         println!("];");
 
