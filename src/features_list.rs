@@ -296,3 +296,5 @@ declare_features!(
 );
 
 // FIXME: missing CRC32 [19-16]
+
+// CRC32 instructions have no features

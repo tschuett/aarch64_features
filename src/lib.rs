@@ -14,7 +14,7 @@
 //! features.  The features cover a wide range from floating
 //! operations, atomics, operations on caches, operations for
 //! virtualization, and cryptography. It supports AArch64 on Linux and
-//! Macos.
+//! macOS.
 //!
 //! Despite striving for completeness, the Linux kernel only exposes a subset of the features to userspace, see [feature registers](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst).
 //!
