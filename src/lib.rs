@@ -160,7 +160,7 @@
 //! We are happy to extend the test suite.
 //!
 //!```shell
-//! git clone
+//! git clone https://github.com/tschuett/aarch64_features.git
 //! cd aarch64_features
 //! cargo run
 //!```
@@ -517,15 +517,6 @@ pub fn check_features() -> HashSet<Feature> {
         eprintln!("warning unsupported os or cpu");
         return HashSet::new();
     }
-    //let mut features = HashSet::new();
-    //
-    //let cpu_info = CPUInfo::new();
-    //
-    //for feature in AARCH64_FEATURES {
-    //    if let Some(feat) = feature.matches(&cpu_info) {
-    //        features.insert(feat);
-    //    }
-    //}
 
     get_features()
 }
