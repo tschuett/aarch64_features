@@ -23,5 +23,5 @@ jobs:
     - name: Run check.sh
       run: ./check.sh
     - uses: actions-rs/audit-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
