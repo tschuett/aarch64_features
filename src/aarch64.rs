@@ -1,5 +1,8 @@
 use crate::cpu_info::Register;
 
+// let aa64isar0: u64;
+// unsafe { asm!("mrs $0, ID_AA64ISAR0_EL1" : "=r"(aa64isar0)); }
+
 #[cfg(target_arch = "aarch64")]
 pub(crate) fn read_register(register: Register) -> u64 {
     use std::arch::asm;
