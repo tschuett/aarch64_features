@@ -2,7 +2,7 @@ use crate::Feature;
 use libc::AT_HWCAP;
 use libc::HWCAP_CPUID;
 // MIDR_EL1
-use crate::linux_exported_features::EXPOSED_FEATURES;
+use crate::linux_exported_features::EXPORTED_FEATURES;
 
 /// see https://www.kernel.org/doc/html/latest/arm64/cpu-feature-registers.html
 pub(crate) fn check_availability() -> bool {
@@ -14,7 +14,7 @@ pub(crate) fn check_availability() -> bool {
 }
 
 pub(crate) fn is_exposed_to_userspace(feat: Feature) -> bool {
-    EXPOSED_FEATURES.contains(&feat)
+    EXPORTED_FEATURES.contains(&feat)
 }
 
 // https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register
