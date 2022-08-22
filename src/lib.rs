@@ -155,6 +155,12 @@
 //!
 //! ARMv9 features are from the [Arm Architecture Reference Manual Supplement Armv9, for Armv9-A architecture profile](https://developer.arm.com/documentation/ddi0608/latest)  Issue A.a.
 //!
+//!# Caveats
+//!
+//!The Linux kernel only exports a subset of the feature to userspace, see [features](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst). The exported features change over time. Thus the reported features of this crate may change between releases, see [exposed features](crate::linux_exported_features::EXPORTED_FEATURES).
+//!
+//!
+//!
 //!# Test your core
 //!
 //! We are happy to extend the test suite.
@@ -557,6 +563,9 @@ mod macos_aarch64 {
 mod aarch64;
 mod cpu_info;
 mod features_list;
+
+/// The list of features that are exported by the kernel to userspace.
+pub mod linux_exported_features;
 
 #[allow(unused)]
 #[derive(Hash, Eq, PartialEq)]
