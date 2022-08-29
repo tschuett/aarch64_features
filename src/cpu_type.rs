@@ -11,10 +11,10 @@ enum Implementer {
     Fujitsu = 0x46,
     Apple = 0x61,
     Ampere = 0xc0,
-    Nvidia = 0x4E,
 }
 
 #[derive(Debug)]
+#[non_exhaustive]
 /// Core kind
 pub enum Core {
     /// ARM Neoverse N1 core
@@ -33,10 +33,6 @@ pub enum Core {
     AppleM1Max,
     /// Ampere 1
     Ampere1,
-    /// Nvidia Carmel
-    Carmel,
-    /// Nvidia Denver
-    Denver,
     /// unknown core
     Unknown,
 }
@@ -62,10 +58,6 @@ pub fn detect_core() -> Core {
         Core::AppleM1Max
     } else if is_ampere_1(&midr) {
         Core::Ampere1
-    } else if is_nvidia_carmel(&midr) {
-        Core::Carmel
-    } else if is_nvidia_denver(&midr) {
-        Core::Denver
     } else {
         Core::Unknown
     }
@@ -174,16 +166,6 @@ fn is_ampere_1(midr: &Midr) -> bool {
         && midr.check_part_num(AMPERE_1_PART_NUM) // ampere 1
 }
 
-fn is_nvidia_carmel(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Nvidia) // nvidia
-        && midr.check_part_num(NVIDIA_CARMEL_PART_NUM) // carmel
-}
-
-fn is_nvidia_denver(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Nvidia) // nvidia
-        && midr.check_part_num(NVIDIA_DENVER_PART_NUM) // denver
-}
-
 const APPLE_M1_FIRESTORM_PART_NUM: u64 = 0x22;
 const APPLE_M1_ICESTORM_PART_NUM: u64 = 0x23;
 
@@ -196,9 +178,6 @@ const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x29;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
 const ARM_NEOVERSE_V1_PART_NUM: u64 = 0xD40;
-
-const NVIDIA_CARMEL_PART_NUM: u64 = 0x004;
-const NVIDIA_DENVER_PART_NUM: u64 = 0x003;
 
 const AMPERE_1_PART_NUM: u64 = 0xac3;
 
