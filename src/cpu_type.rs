@@ -10,6 +10,8 @@ enum Implementer {
     Arm = 0x41,
     Fujitsu = 0x46,
     Apple = 0x61,
+    Ampere = 0xc0,
+    Nvidia = 0x4E,
 }
 
 #[derive(Debug)]
@@ -29,6 +31,12 @@ pub enum Core {
     AppleM1Pro,
     /// Apple M1 Max
     AppleM1Max,
+    /// Ampere 1
+    Ampere1,
+    /// Nvidia Carmel
+    Carmel,
+    /// Nvidia Denver
+    Denver,
     /// unknown core
     Unknown,
 }
@@ -36,26 +44,7 @@ pub enum Core {
 #[cfg(target_arch = "aarch64")]
 /// try to detect the current core
 pub fn detect_core() -> Core {
-    use std::arch::asm;
-    let mut tmp: u64;
-
-    unsafe {
-        asm!("mrs {tmp}, MIDR_EL1", tmp = out(reg) tmp);
-    }
-
-    let implementer = (tmp >> 24) & 0b11111111;
-    let variant = (tmp >> 20) & 0b1111;
-    let architecture = (tmp >> 16) & 0b1111;
-    let part_num = (tmp >> 4) & 0b111111111111; // FIXME
-    let revision = tmp & 0b1111;
-
-    let midr = Midr {
-        implementer,
-        variant,
-        architecture,
-        part_num,
-        revision,
-    };
+    let midr = Midr::new();
 
     if is_neoverse_n1(&midr) {
         Core::NeoverseN1
@@ -71,6 +60,12 @@ pub fn detect_core() -> Core {
         Core::AppleM1Pro
     } else if is_apple_m1_max(&midr) {
         Core::AppleM1Max
+    } else if is_ampere_1(&midr) {
+        Core::Ampere1
+    } else if is_nvidia_carmel(&midr) {
+        Core::Carmel
+    } else if is_nvidia_denver(&midr) {
+        Core::Denver
     } else {
         Core::Unknown
     }
@@ -89,6 +84,29 @@ struct Midr {
 }
 
 impl Midr {
+    fn new() -> Self {
+        use std::arch::asm;
+        let mut midr: u64;
+
+        unsafe {
+            asm!("mrs {midr}, MIDR_EL1", midr = out(reg) midr);
+        }
+
+        let implementer = extract(midr, MIDR_IMPLEMENTOR_SHIFT, MIDR_IMPLEMENTOR_MASK);
+        let variant = extract(midr, MIDR_VARIANT_SHIFT, MIDR_VARIANT_MASK);
+        let architecture = extract(midr, MIDR_ARCHITECTURE_SHIFT, MIDR_ARCHITECTURE_MASK);
+        let part_num = extract(midr, MIDR_PART_NUM_SHIFT, MIDR_PART_NUM_MASK);
+        let revision = extract(midr, MIDR_REVISION_SHIFT, MIDR_REVISION_MASK);
+
+        Midr {
+            implementer,
+            variant,
+            architecture,
+            part_num,
+            revision,
+        }
+    }
+
     fn check_implementer(&self, im: Implementer) -> bool {
         self.implementer == im as u64
     }
@@ -103,7 +121,7 @@ impl Midr {
 }
 
 fn is_neoverse_n1(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Arm)
+    midr.check_implementer(Implementer::Arm) // arm
         && midr.variant == 0x4
         && midr.architecture == 0xf
         && midr.check_part_num(ARM_NEOVERSE_N1_PART_NUM) // N1
@@ -111,7 +129,7 @@ fn is_neoverse_n1(midr: &Midr) -> bool {
 }
 
 fn is_neoverse_n2(midr: &Midr) -> bool {
-    midr.implementer == Implementer::Arm as u64 // arm
+    midr.check_implementer(Implementer::Arm) // arm
         && midr.variant == 0x0 // r0p0
         && midr.architecture == 0xf
         && midr.check_part_num(ARM_NEOVERSE_N2_PART_NUM) // N2
@@ -119,7 +137,7 @@ fn is_neoverse_n2(midr: &Midr) -> bool {
 }
 
 fn is_neoverse_v1(midr: &Midr) -> bool {
-    midr.implementer == Implementer::Arm as u64 // arm
+    midr.check_implementer(Implementer::Arm) // arm
         && midr.variant == 0x1 // r1p1
         && midr.architecture == 0xf
         && midr.check_part_num(ARM_NEOVERSE_V1_PART_NUM) // V1
@@ -151,6 +169,21 @@ fn is_apple_m1_max(midr: &Midr) -> bool {
         )
 }
 
+fn is_ampere_1(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Ampere) // ampere
+        && midr.check_part_num(AMPERE_1_PART_NUM) // ampere 1
+}
+
+fn is_nvidia_carmel(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Nvidia) // nvidia
+        && midr.check_part_num(NVIDIA_CARMEL_PART_NUM) // carmel
+}
+
+fn is_nvidia_denver(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Nvidia) // nvidia
+        && midr.check_part_num(NVIDIA_DENVER_PART_NUM) // denver
+}
+
 const APPLE_M1_FIRESTORM_PART_NUM: u64 = 0x22;
 const APPLE_M1_ICESTORM_PART_NUM: u64 = 0x23;
 
@@ -163,3 +196,24 @@ const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x29;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
 const ARM_NEOVERSE_V1_PART_NUM: u64 = 0xD40;
+
+const NVIDIA_CARMEL_PART_NUM: u64 = 0x004;
+const NVIDIA_DENVER_PART_NUM: u64 = 0x003;
+
+const AMPERE_1_PART_NUM: u64 = 0xac3;
+
+const MIDR_IMPLEMENTOR_SHIFT: u64 = 24;
+const MIDR_VARIANT_SHIFT: u64 = 24;
+const MIDR_ARCHITECTURE_SHIFT: u64 = 24;
+const MIDR_PART_NUM_SHIFT: u64 = 4;
+const MIDR_REVISION_SHIFT: u64 = 0;
+
+const MIDR_REVISION_MASK: u64 = 0xf;
+const MIDR_PART_NUM_MASK: u64 = 0xfff << MIDR_PART_NUM_SHIFT;
+const MIDR_ARCHITECTURE_MASK: u64 = 0xf << MIDR_ARCHITECTURE_SHIFT;
+const MIDR_VARIANT_MASK: u64 = 0xf << MIDR_VARIANT_SHIFT;
+const MIDR_IMPLEMENTOR_MASK: u64 = 0xff << MIDR_IMPLEMENTOR_SHIFT;
+
+fn extract(midr: u64, shift: u64, mask: u64) -> u64 {
+    (midr >> shift) & mask
+}
