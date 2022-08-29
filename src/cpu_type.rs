@@ -34,7 +34,6 @@ pub enum Core {
 }
 
 #[cfg(target_arch = "aarch64")]
-#[deprecated(note = "experimental")]
 /// try to detect the current core
 pub fn detect_core() -> Core {
     use std::arch::asm;
@@ -50,7 +49,7 @@ pub fn detect_core() -> Core {
     let part_num = (tmp >> 4) & 0b111111111111; // FIXME
     let revision = tmp & 0b1111;
 
-    let midr = MIDR {
+    let midr = Midr {
         implementer,
         variant,
         architecture,
@@ -59,15 +58,21 @@ pub fn detect_core() -> Core {
     };
 
     if is_neoverse_n1(&midr) {
-        return Core::NeoverseN1;
+        Core::NeoverseN1
     } else if is_neoverse_n2(&midr) {
-        return Core::NeoverseN2;
+        Core::NeoverseN2
     } else if is_neoverse_v1(&midr) {
-        return Core::NeoverseV1;
+        Core::NeoverseV1
     } else if is_a64fx(&midr) {
-        return Core::A64FX;
+        Core::A64FX
+    } else if is_apple_m1(&midr) {
+        Core::AppleM1
+    } else if is_apple_m1_pro(&midr) {
+        Core::AppleM1Pro
+    } else if is_apple_m1_max(&midr) {
+        Core::AppleM1Max
     } else {
-        return Core::Unknown;
+        Core::Unknown
     }
 }
 
@@ -75,7 +80,7 @@ pub fn detect_core() -> Core {
 /// try to detect the current core
 pub fn detect_core() {}
 
-struct MIDR {
+struct Midr {
     implementer: u64,
     variant: u64,
     architecture: u64,
@@ -83,37 +88,78 @@ struct MIDR {
     revision: u64,
 }
 
-fn is_neoverse_n1(midr: &MIDR) -> bool {
-    midr.implementer == Implementer::Arm as u64// arm
+impl Midr {
+    fn check_implementer(&self, im: Implementer) -> bool {
+        self.implementer == im as u64
+    }
+
+    fn check_part_num(&self, part_num: u64) -> bool {
+        self.part_num == part_num
+    }
+
+    fn check_part_num_or(&self, part_num0: u64, part_num1: u64) -> bool {
+        self.part_num == part_num0 || self.part_num == part_num1
+    }
+}
+
+fn is_neoverse_n1(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Arm)
         && midr.variant == 0x4
         && midr.architecture == 0xf
-        && midr.part_num == 0xd0c // N1
+        && midr.check_part_num(ARM_NEOVERSE_N1_PART_NUM) // N1
         && midr.revision == 0x0 // r4p0
 }
 
-fn is_neoverse_n2(midr: &MIDR) -> bool {
+fn is_neoverse_n2(midr: &Midr) -> bool {
     midr.implementer == Implementer::Arm as u64 // arm
         && midr.variant == 0x0 // r0p0
         && midr.architecture == 0xf
-        && midr.part_num == 0xd49 // N2
+        && midr.check_part_num(ARM_NEOVERSE_N2_PART_NUM) // N2
         && midr.revision == 0x0 // r0p0
 }
 
-fn is_neoverse_v1(midr: &MIDR) -> bool {
+fn is_neoverse_v1(midr: &Midr) -> bool {
     midr.implementer == Implementer::Arm as u64 // arm
         && midr.variant == 0x1 // r1p1
         && midr.architecture == 0xf
-        && midr.part_num == 0xd40 // V1
+        && midr.check_part_num(ARM_NEOVERSE_V1_PART_NUM) // V1
         && midr.revision == 0x1 // r1p1
 }
 
-fn is_a64fx(midr: &MIDR) -> bool {
-    return midr.implementer == Implementer::Fujitsu as u64 && midr.part_num == 0x1;
+fn is_a64fx(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Fujitsu) && midr.part_num == 0x1
 }
 
-//#define APPLE_CPU_PART_M1_ICESTORM	0x022
-//#define APPLE_CPU_PART_M1_FIRESTORM	0x023
-//#define APPLE_CPU_PART_M1_ICESTORM_PRO	0x024
-//#define APPLE_CPU_PART_M1_FIRESTORM_PRO	0x025
-//#define APPLE_CPU_PART_M1_ICESTORM_MAX	0x028
-//#define APPLE_CPU_PART_M1_FIRESTORM_MAX	0x029
+fn is_apple_m1(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Apple)
+        && midr.check_part_num_or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)
+}
+
+fn is_apple_m1_pro(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Apple)
+        && midr.check_part_num_or(
+            APPLE_M1_FIRESTORM_PRO_PART_NUM,
+            APPLE_M1_ICESTORM_PRO_PART_NUM,
+        )
+}
+
+fn is_apple_m1_max(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Apple)
+        && midr.check_part_num_or(
+            APPLE_M1_FIRESTORM_MAX_PART_NUM,
+            APPLE_M1_ICESTORM_MAX_PART_NUM,
+        )
+}
+
+const APPLE_M1_FIRESTORM_PART_NUM: u64 = 0x22;
+const APPLE_M1_ICESTORM_PART_NUM: u64 = 0x23;
+
+const APPLE_M1_FIRESTORM_PRO_PART_NUM: u64 = 0x24;
+const APPLE_M1_ICESTORM_PRO_PART_NUM: u64 = 0x25;
+
+const APPLE_M1_FIRESTORM_MAX_PART_NUM: u64 = 0x28;
+const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x29;
+
+const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
+const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
+const ARM_NEOVERSE_V1_PART_NUM: u64 = 0xD40;
