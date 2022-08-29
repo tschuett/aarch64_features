@@ -562,6 +562,7 @@ mod macos_aarch64 {
 
 mod aarch64;
 mod cpu_info;
+mod cpu_type;
 mod features_list;
 
 /// The list of features that are exported by the kernel to userspace.
