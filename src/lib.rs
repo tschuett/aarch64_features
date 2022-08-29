@@ -560,9 +560,11 @@ mod macos_aarch64 {
     pub(crate) mod cpu;
 }
 
+/// detector for core kinds
+pub mod cpu_type;
+
 mod aarch64;
 mod cpu_info;
-mod cpu_type;
 mod features_list;
 
 /// The list of features that are exported by the kernel to userspace.

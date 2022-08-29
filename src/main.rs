@@ -7,7 +7,7 @@ fn main() {
     #[cfg(target_arch = "aarch64")]
     {
         use aarch64_features::check_features;
-
+        use aarch64_features::cpu_type::detect_core;
         let features = check_features();
 
         println!();
@@ -19,5 +19,7 @@ fn main() {
         println!("];");
 
         println!();
+
+        detect_core();
     }
 }
