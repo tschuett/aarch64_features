@@ -1,9 +1,118 @@
-use crate::cpu_type::Implementer;
+use std::fmt;
+
+#[non_exhaustive]
+#[derive(PartialEq)]
+pub(crate) enum Implementer {
+    Arm = 0x41,
+    Fujitsu = 0x46,
+    Apple = 0x61,
+    Ampere = 0xc0,
+}
+
+impl TryFrom<u64> for Implementer {
+    type Error = &'static str;
+
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        if value == 0x41 {
+            return Ok(Implementer::Arm);
+        } else if value == 0x46 {
+            return Ok(Implementer::Fujitsu);
+        } else if value == 0x61 {
+            return Ok(Implementer::Apple);
+        } else if value == 0xc0 {
+            return Ok(Implementer::Ampere);
+        } else {
+            Err("unknown implementer")
+        }
+    }
+}
+
+impl fmt::Display for Implementer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Implementer::Arm => {
+                write!(f, "Arm")
+            }
+            Implementer::Fujitsu => {
+                write!(f, "Fujitsu")
+            }
+            Implementer::Apple => {
+                write!(f, "Apple")
+            }
+            Implementer::Ampere => {
+                write!(f, "Ampere")
+            }
+        }
+    }
+}
+
+#[derive(PartialEq)]
+pub(crate) enum Architecture {
+    Armv4 = 0x01,
+    Armv4T = 0x02,
+    Armv5 = 0x03,
+    Armv5T = 0x04,
+    Armv5TE = 0x05,
+    Armv5TEJ = 0x06,
+    Registers = 0x07,
+}
+
+impl TryFrom<u64> for Architecture {
+    type Error = &'static str;
+
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        if value == 0x01 {
+            return Ok(Architecture::Armv4);
+        } else if value == 0x02 {
+            return Ok(Architecture::Armv4T);
+        } else if value == 0x03 {
+            return Ok(Architecture::Armv5);
+        } else if value == 0x04 {
+            return Ok(Architecture::Armv5T);
+        } else if value == 0x05 {
+            return Ok(Architecture::Armv5TE);
+        } else if value == 0x06 {
+            return Ok(Architecture::Armv5TEJ);
+        } else if value == 0x07 {
+            return Ok(Architecture::Registers);
+        } else {
+            Err("Value greater than 0x07")
+        }
+    }
+}
+
+impl fmt::Display for Architecture {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Architecture::Armv4 => {
+                write!(f, "Armv4")
+            }
+            Architecture::Armv4T => {
+                write!(f, "Armv4T")
+            }
+            Architecture::Armv5 => {
+                write!(f, "Armv5")
+            }
+            Architecture::Armv5T => {
+                write!(f, "Armv5T")
+            }
+            Architecture::Armv5TE => {
+                write!(f, "Armv5TE")
+            }
+            Architecture::Armv5TEJ => {
+                write!(f, "Armv5TEJ")
+            }
+            Architecture::Registers => {
+                write!(f, "Registers")
+            }
+        }
+    }
+}
 
 pub(crate) struct Midr {
-    implementer: u64,
+    implementer: Implementer,
     variant: u64,
-    architecture: u64,
+    architecture: Architecture,
     part_num: u64,
     revision: u64,
 }
@@ -37,15 +146,15 @@ impl Midr {
     }
 
     pub(crate) fn check_implementer(&self, im: Implementer) -> bool {
-        self.implementer == im as u64
+        self.implementer == im
     }
 
     pub(crate) fn check_variant(&self, im: u64) -> bool {
         self.variant == im as u64
     }
 
-    pub(crate) fn check_architecture(&self, im: u64) -> bool {
-        self.architecture == im as u64
+    pub(crate) fn check_architecture(&self, arch: Architecture) -> bool {
+        self.architecture == arch
     }
 
     pub(crate) fn check_part_num(&self, part_num: u64) -> bool {
@@ -149,8 +258,18 @@ mod tests {
     fn test_arm_implementer() {
         let midr = MidrBuilder::new().implementer(Implementer::Arm).build();
 
-        midr.dump();
         assert!(midr.check_implementer(Implementer::Arm));
         assert!(!midr.check_implementer(Implementer::Ampere));
+    }
+
+    #[test]
+    fn test_variant() {
+        let midr = MidrBuilder::new().variant(0x7).build();
+
+        assert!(midr.check_variant(0x7));
+
+        let midr = MidrBuilder::new().build();
+
+        assert!(midr.check_variant(0x0));
     }
 }

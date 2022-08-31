@@ -1,3 +1,5 @@
+use crate::midr::Architecture;
+use crate::midr::Implementer;
 use crate::midr::Midr;
 
 // https://developer.arm.com/documentation/ddi0595/2020-12/AArch64-Registers/MIDR-EL1--Main-ID-Register
@@ -5,13 +7,6 @@ use crate::midr::Midr;
 // https://github.com/llvm/llvm-project/blob/main/llvm/lib/Support/Host.cpp
 
 // https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/cputype.h
-
-pub(crate) enum Implementer {
-    Arm = 0x41,
-    Fujitsu = 0x46,
-    Apple = 0x61,
-    Ampere = 0xc0,
-}
 
 #[derive(Debug)]
 #[non_exhaustive]
@@ -70,7 +65,7 @@ pub fn detect_core() {}
 fn is_neoverse_n1(midr: &Midr) -> bool {
     midr.check_implementer(Implementer::Arm) // arm
         && midr.check_variant(0x4)
-        && midr.check_architecture(0xf)
+        && midr.check_architecture(Architecture::Registers)
         && midr.check_part_num(ARM_NEOVERSE_N1_PART_NUM) // N1
         && midr.check_revision(0x0) // r4p0
 }
@@ -78,7 +73,7 @@ fn is_neoverse_n1(midr: &Midr) -> bool {
 fn is_neoverse_n2(midr: &Midr) -> bool {
     midr.check_implementer(Implementer::Arm) // arm
         && midr.check_variant(0x0) // r0p0
-        && midr.check_architecture(0xf)
+        && midr.check_architecture(Architecture::Registers)
         && midr.check_part_num(ARM_NEOVERSE_N2_PART_NUM) // N2
         && midr.check_revision(0x0) // r0p0
 }
@@ -86,7 +81,7 @@ fn is_neoverse_n2(midr: &Midr) -> bool {
 fn is_neoverse_v1(midr: &Midr) -> bool {
     midr.check_implementer(Implementer::Arm) // arm
         && midr.check_variant(0x1) // r1p1
-        && midr.check_architecture(0xf)
+        && midr.check_architecture(Architecture::Registers)
         && midr.check_part_num(ARM_NEOVERSE_V1_PART_NUM) // V1
         && midr.check_revision(0x1) // r1p1
 }
