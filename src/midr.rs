@@ -20,14 +20,6 @@ impl Midr {
         Self::extract_parts(midr)
     }
 
-    //    #[cfg(test)]
-    //    fn new_test(midr: u64) -> Self {
-    //        println!("new_test: {}", midr);
-    //        let result = Self::extract_parts(midr);
-    //        result.dump();
-    //        result
-    //    }
-
     fn extract_parts(midr: u64) -> Self {
         let implementer = extract(midr, MIDR_IMPLEMENTOR_SHIFT, MIDR_IMPLEMENTOR_MASK);
         let variant = extract(midr, MIDR_VARIANT_SHIFT, MIDR_VARIANT_MASK);
@@ -45,11 +37,6 @@ impl Midr {
     }
 
     pub(crate) fn check_implementer(&self, im: Implementer) -> bool {
-        if cfg!(test) {
-            // do test stuff
-        } else {
-            // do non-test stuff
-        }
         self.implementer == im as u64
     }
 
