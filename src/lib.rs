@@ -566,6 +566,7 @@ pub mod cpu_type;
 mod aarch64;
 mod cpu_info;
 mod features_list;
+mod midr;
 
 /// The list of features that are exported by the kernel to userspace.
 pub mod linux_exported_features;
