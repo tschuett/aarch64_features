@@ -1,12 +1,13 @@
 use std::fmt;
 
 #[non_exhaustive]
-#[derive(PartialEq)]
+#[derive(Clone, Copy, PartialEq)]
 pub(crate) enum Implementer {
     Arm = 0x41,
     Fujitsu = 0x46,
     Apple = 0x61,
     Ampere = 0xc0,
+    Unknown,
 }
 
 impl TryFrom<u64> for Implementer {
@@ -14,13 +15,13 @@ impl TryFrom<u64> for Implementer {
 
     fn try_from(value: u64) -> Result<Self, Self::Error> {
         if value == 0x41 {
-            return Ok(Implementer::Arm);
+            Ok(Implementer::Arm)
         } else if value == 0x46 {
-            return Ok(Implementer::Fujitsu);
+            Ok(Implementer::Fujitsu)
         } else if value == 0x61 {
-            return Ok(Implementer::Apple);
+            Ok(Implementer::Apple)
         } else if value == 0xc0 {
-            return Ok(Implementer::Ampere);
+            Ok(Implementer::Ampere)
         } else {
             Err("unknown implementer")
         }
@@ -42,11 +43,14 @@ impl fmt::Display for Implementer {
             Implementer::Ampere => {
                 write!(f, "Ampere")
             }
+            Implementer::Unknown => {
+                write!(f, "Unknown")
+            }
         }
     }
 }
 
-#[derive(PartialEq)]
+#[derive(Clone, Copy, PartialEq)]
 pub(crate) enum Architecture {
     Armv4 = 0x01,
     Armv4T = 0x02,
@@ -55,6 +59,7 @@ pub(crate) enum Architecture {
     Armv5TE = 0x05,
     Armv5TEJ = 0x06,
     Registers = 0x07,
+    Unknown,
 }
 
 impl TryFrom<u64> for Architecture {
@@ -62,19 +67,19 @@ impl TryFrom<u64> for Architecture {
 
     fn try_from(value: u64) -> Result<Self, Self::Error> {
         if value == 0x01 {
-            return Ok(Architecture::Armv4);
+            Ok(Architecture::Armv4)
         } else if value == 0x02 {
-            return Ok(Architecture::Armv4T);
+            Ok(Architecture::Armv4T)
         } else if value == 0x03 {
-            return Ok(Architecture::Armv5);
+            Ok(Architecture::Armv5)
         } else if value == 0x04 {
-            return Ok(Architecture::Armv5T);
+            Ok(Architecture::Armv5T)
         } else if value == 0x05 {
-            return Ok(Architecture::Armv5TE);
+            Ok(Architecture::Armv5TE)
         } else if value == 0x06 {
-            return Ok(Architecture::Armv5TEJ);
+            Ok(Architecture::Armv5TEJ)
         } else if value == 0x07 {
-            return Ok(Architecture::Registers);
+            Ok(Architecture::Registers)
         } else {
             Err("Value greater than 0x07")
         }
@@ -104,6 +109,9 @@ impl fmt::Display for Architecture {
             }
             Architecture::Registers => {
                 write!(f, "Registers")
+            }
+            Architecture::Unknown => {
+                write!(f, "unknown")
             }
         }
     }
@@ -137,9 +145,9 @@ impl Midr {
         let revision = extract(midr, MIDR_REVISION_SHIFT, MIDR_REVISION_MASK);
 
         Midr {
-            implementer,
+            implementer: Implementer::try_from(implementer).unwrap_or(Implementer::Unknown),
             variant,
-            architecture,
+            architecture: Architecture::try_from(architecture).unwrap_or(Architecture::Unknown),
             part_num,
             revision,
         }
@@ -195,9 +203,9 @@ fn extract(midr: u64, shift: u64, mask: u64) -> u64 {
 }
 
 pub(crate) struct MidrBuilder {
-    implementer: Option<u64>,
+    implementer: Option<Implementer>,
     variant: Option<u64>,
-    architecture: Option<u64>,
+    architecture: Option<Architecture>,
     part_num: Option<u64>,
     revision: Option<u64>,
 }
@@ -214,7 +222,7 @@ impl MidrBuilder {
     }
 
     pub(crate) fn implementer(mut self, im: Implementer) -> MidrBuilder {
-        self.implementer = Some(im as u64);
+        self.implementer = Some(im);
         self
     }
 
@@ -223,7 +231,7 @@ impl MidrBuilder {
         self
     }
 
-    pub(crate) fn architecture(mut self, arch: u64) -> MidrBuilder {
+    pub(crate) fn architecture(mut self, arch: Architecture) -> MidrBuilder {
         self.architecture = Some(arch);
         self
     }
@@ -240,9 +248,9 @@ impl MidrBuilder {
 
     pub(crate) fn build(&self) -> Midr {
         Midr {
-            implementer: self.implementer.unwrap_or(0x0),
+            implementer: self.implementer.unwrap_or(Implementer::Unknown),
             variant: self.variant.unwrap_or(0x0),
-            architecture: self.architecture.unwrap_or(0x0),
+            architecture: self.architecture.unwrap_or(Architecture::Unknown),
             part_num: self.part_num.unwrap_or(0x0),
             revision: self.revision.unwrap_or(0x0),
         }
