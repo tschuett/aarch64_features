@@ -64,6 +64,18 @@
 //!
 //! It removes the need to understand the details of low-level AArch64 system programming.
 //!
+//!# Virtualization
+//!
+//! Armv8.1 introduced the mandatory [FEAT_VHE][Feature::FEAT_VHE], the virtualization host extensions. Armv8.3 brought the optional [FEAT_NV][Feature::FEAT_NV] with nested virtualization support. This work was continued in Armv8.4 with the optional [FEAT_NV2][Feature::FEAT_NV2] for enhanced nested virtualization support.
+//!
+//!# Pointer Authentication
+//!
+//! [FEAT_PAuth][Feature::FEAT_PAuth] and [FEAT_EPAC][Feature::FEAT_EPAC] [FEAT_PAuth2][Feature::FEAT_PAuth2], [FEAT_FPAC][Feature::FEAT_FPAC] and [FEAT_FPACCOMBINE][Feature::FEAT_FPACCOMBINE]
+//!
+//!# Atomic operations
+//!
+//! Armv8.1 brought the mandatory [FEAT_LSE][Feature::FEAT_LSE]. It introduced the first atomic read-modify-write operations.
+//!
 //!# Status
 //!
 //! - [x] AdvSIMD
@@ -673,3 +685,5 @@ mod tests {
 // https://developer.arm.com/documentation/ddi0601/2021-06/AArch64-Registers/ID-AA64SMFR0-EL1--SME-Feature-ID-register-0
 
 // Armv8.1-M
+
+// TODO FEAT_EPAC
