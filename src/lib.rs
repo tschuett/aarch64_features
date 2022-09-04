@@ -66,7 +66,7 @@
 //!
 //!# Virtualization
 //!
-//! Armv8.1 introduced the mandatory [FEAT_VHE][Feature::FEAT_VHE], the virtualization host extensions. Armv8.3 brought the optional [FEAT_NV][Feature::FEAT_NV] with nested virtualization support. This work was continued in Armv8.4 with the optional [FEAT_NV2][Feature::FEAT_NV2] for enhanced nested virtualization support.
+//! Armv8.1 introduced the mandatory [FEAT_VHE][Feature::FEAT_VHE], the virtualization host extensions. Armv8.3 brought the optional [FEAT_NV][Feature::FEAT_NV] with nested virtualization support. This work was continued in Armv8.4 with the optional [FEAT_NV2][Feature::FEAT_NV2] for enhanced nested virtualization support. Note that the ARM Neoverse V1 supports [enhanced nested virtualization](https://developer.arm.com/documentation/101427/0101/Register-descriptions/AArch64-system-registers/ID-AA64MMFR2-EL1--AArch64-Memory-Model-Feature-Register-2--EL1).
 //!
 //!# Pointer Authentication
 //!
@@ -74,7 +74,7 @@
 //!
 //!# Atomic operations
 //!
-//! Armv8.1 brought the mandatory [FEAT_LSE][Feature::FEAT_LSE]. It introduced the first atomic read-modify-write operations.
+//! Armv8.1 brought the mandatory [FEAT_LSE][Feature::FEAT_LSE]. It introduced the first atomic read-modify-write operations. [FEAT_LRCPC][Feature::FEAT_LRCPC] [FEAT_LRCPC2][Feature::FEAT_LRCPC2]
 //!
 //!# Status
 //!
@@ -687,3 +687,13 @@ mod tests {
 // Armv8.1-M
 
 // TODO FEAT_EPAC
+
+use std::path::Path;
+use std::path::PathBuf;
+
+fn undo_windows(path: &Path) -> Path {
+    if path.ends_with(".exe") {
+        xxxx
+    }
+    return path;
+}
