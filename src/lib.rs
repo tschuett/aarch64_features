@@ -688,12 +688,3 @@ mod tests {
 
 // TODO FEAT_EPAC
 
-use std::path::Path;
-use std::path::PathBuf;
-
-fn undo_windows(path: &Path) -> Path {
-    if path.ends_with(".exe") {
-        xxxx
-    }
-    return path;
-}
