@@ -22,4 +22,7 @@ pub const EXPORTED_FEATURES: &[Feature] = &[
     Feature::FEAT_DIT,     // DIR
     Feature::FEAT_SVE,     // SVE
     Feature::FEAT_AdvSIMD, // AdvSIMD
+    // ID_AA64PFR1_EL1
+    Feature::FEAT_MTE, // MTE
+                       // MIDR_EL1
 ];

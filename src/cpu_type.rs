@@ -65,15 +65,16 @@ pub fn detect_core() {}
 fn is_neoverse_n1(midr: &Midr) -> bool {
     midr.check_implementer(Implementer::Arm) // arm
         && midr.check_variant(0x4)
-        && midr.check_architecture(Architecture::Registers)
+        && midr.check_architecture(Architecture::IDRegisters)
         && midr.check_part_num(ARM_NEOVERSE_N1_PART_NUM) // N1
         && midr.check_revision(0x0) // r4p0
 }
 
+// https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register
 fn is_neoverse_n2(midr: &Midr) -> bool {
     midr.check_implementer(Implementer::Arm) // arm
         && midr.check_variant(0x0) // r0p0
-        && midr.check_architecture(Architecture::Registers)
+        && midr.check_architecture(Architecture::IDRegisters)
         && midr.check_part_num(ARM_NEOVERSE_N2_PART_NUM) // N2
         && midr.check_revision(0x0) // r0p0
 }
@@ -81,7 +82,7 @@ fn is_neoverse_n2(midr: &Midr) -> bool {
 fn is_neoverse_v1(midr: &Midr) -> bool {
     midr.check_implementer(Implementer::Arm) // arm
         && midr.check_variant(0x1) // r1p1
-        && midr.check_architecture(Architecture::Registers)
+        && midr.check_architecture(Architecture::IDRegisters)
         && midr.check_part_num(ARM_NEOVERSE_V1_PART_NUM) // V1
         && midr.check_revision(0x1) // r1p1
 }

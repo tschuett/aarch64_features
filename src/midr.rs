@@ -58,7 +58,7 @@ pub(crate) enum Architecture {
     Armv5T = 0x04,
     Armv5TE = 0x05,
     Armv5TEJ = 0x06,
-    Registers = 0x07,
+    IDRegisters = 0x07,
     Unknown,
 }
 
@@ -79,7 +79,7 @@ impl TryFrom<u64> for Architecture {
         } else if value == 0x06 {
             Ok(Architecture::Armv5TEJ)
         } else if value == 0x07 {
-            Ok(Architecture::Registers)
+            Ok(Architecture::IDRegisters)
         } else {
             Err("Value greater than 0x07")
         }
@@ -107,8 +107,8 @@ impl fmt::Display for Architecture {
             Architecture::Armv5TEJ => {
                 write!(f, "Armv5TEJ")
             }
-            Architecture::Registers => {
-                write!(f, "Registers")
+            Architecture::IDRegisters => {
+                write!(f, "ID Registers")
             }
             Architecture::Unknown => {
                 write!(f, "unknown")
