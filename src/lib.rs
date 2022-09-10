@@ -572,7 +572,6 @@ mod macos_aarch64 {
     pub(crate) mod cpu;
 }
 
-/// detector for core kinds
 pub mod cpu_type;
 
 mod aarch64;
@@ -687,4 +686,3 @@ mod tests {
 // Armv8.1-M
 
 // TODO FEAT_EPAC
-

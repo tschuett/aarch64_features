@@ -1,22 +1,23 @@
+//! This an opinionated cpu type detector for AArch64 cores. It won't detect any core.
+//! The coverage is biased.
+//!
+//! It focuses on modern data-center cores from Arm, Apple cores, and other high-performance cores.
+//!
+//! [The MIDR for the Neoverse N2](https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register) describes the contents of MIDR_EL1 registern on Arm Neoverse N2 cores.
+
 use crate::midr::Architecture;
 use crate::midr::Implementer;
 use crate::midr::Midr;
-
-// https://developer.arm.com/documentation/ddi0595/2020-12/AArch64-Registers/MIDR-EL1--Main-ID-Register
-
-// https://github.com/llvm/llvm-project/blob/main/llvm/lib/Support/Host.cpp
-
-// https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/cputype.h
 
 #[derive(Debug)]
 #[non_exhaustive]
 /// Core kind
 pub enum Core {
-    /// ARM Neoverse N1 core
+    /// Arm Neoverse N1 core
     NeoverseN1,
-    /// ARM Neoverse N2 core
+    /// Arm Neoverse N2 core
     NeoverseN2,
-    /// ARM Neoverse V1 core
+    /// Arm Neoverse V1 core
     NeoverseV1,
     /// Fujitsu A64FX
     A64FX,
@@ -155,3 +156,9 @@ mod tests {
         assert!(is_apple_m1(&midr));
     }
 }
+
+// https://developer.arm.com/documentation/ddi0595/2020-12/AArch64-Registers/MIDR-EL1--Main-ID-Register
+
+// https://github.com/llvm/llvm-project/blob/main/llvm/lib/Support/Host.cpp
+
+// https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/cputype.h
