@@ -19,6 +19,8 @@ pub enum Core {
     NeoverseN2,
     /// Arm Neoverse V1 core
     NeoverseV1,
+    /// Arm Neoverse V2 core
+    NeoverseV2,
     /// Fujitsu A64FX
     A64FX,
     /// Apple M1
@@ -44,6 +46,8 @@ pub fn detect_core() -> Core {
         Core::NeoverseN2
     } else if is_neoverse_v1(&midr) {
         Core::NeoverseV1
+    } else if is_neoverse_v2(&midr) {
+        Core::NeoverseV2
     } else if is_a64fx(&midr) {
         Core::A64FX
     } else if is_apple_m1(&midr) {
@@ -88,6 +92,11 @@ fn is_neoverse_v1(midr: &Midr) -> bool {
         && midr.check_revision(0x1) // r1p1
 }
 
+fn is_neoverse_v2(midr: &Midr) -> bool {
+    midr.check_implementer(Implementer::Arm) // arm
+        && midr.check_part_num(ARM_NEOVERSE_V2_PART_NUM) // V2
+}
+
 fn is_a64fx(midr: &Midr) -> bool {
     midr.check_implementer(Implementer::Fujitsu) && midr.check_part_num(0x1)
 }
@@ -130,6 +139,7 @@ const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x29;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
 const ARM_NEOVERSE_V1_PART_NUM: u64 = 0xD40;
+const ARM_NEOVERSE_V2_PART_NUM: u64 = 0xD4F;
 
 const AMPERE_1_PART_NUM: u64 = 0xac3;
 
@@ -162,3 +172,5 @@ mod tests {
 // https://github.com/llvm/llvm-project/blob/main/llvm/lib/Support/Host.cpp
 
 // https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/cputype.h
+
+// https://github.com/gcc-mirror/gcc/blob/master/gcc/config/aarch64/aarch64-cores.def#L142

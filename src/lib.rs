@@ -575,9 +575,9 @@ mod macos_aarch64 {
 pub mod cpu_type;
 
 mod aarch64;
-mod cpu_info;
 mod features_list;
 mod midr;
+mod registers_info;
 
 /// The list of features that are exported by the kernel to userspace.
 pub mod linux_exported_features;

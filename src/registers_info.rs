@@ -24,7 +24,7 @@ pub(crate) enum Register {
     ID_AA64ZFR0_EL1,
 }
 
-pub(crate) struct CPUInfo {
+pub(crate) struct RegistersInfo {
     id_aa64dfr0: u64,
     //id_aa64dfr1: u64,
     id_aa64isar0: u64,
@@ -45,9 +45,9 @@ pub(crate) struct CPUInfo {
     id_aa64zfr0: u64,
 }
 
-impl CPUInfo {
-    pub(crate) fn new() -> CPUInfo {
-        CPUInfo {
+impl RegistersInfo {
+    pub(crate) fn new() -> RegistersInfo {
+        RegistersInfo {
             id_aa64dfr0: read_register(Register::ID_AA64DFR0_EL1),
             //id_aa64dfr1: CPUInfo::read_register(Register::ID_AA64DFR1_EL1),
             id_aa64isar0: read_register(Register::ID_AA64ISAR0_EL1),
@@ -70,7 +70,7 @@ impl CPUInfo {
     }
 }
 
-impl Index<Register> for CPUInfo {
+impl Index<Register> for RegistersInfo {
     type Output = u64;
 
     fn index(&self, index: Register) -> &Self::Output {

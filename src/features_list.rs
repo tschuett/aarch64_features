@@ -1,6 +1,6 @@
 use crate::is_exposed_to_userspace;
 use crate::{
-    cpu_info::{CPUInfo, Register},
+    registers_info::{Register, RegistersInfo},
     Feature,
 };
 
@@ -14,7 +14,7 @@ pub(super) fn get_feature_description(feature: &Feature) -> Option<String> {
 pub(super) fn get_features() -> HashSet<Feature> {
     let mut features = HashSet::new();
 
-    let cpu_info = CPUInfo::new();
+    let cpu_info = RegistersInfo::new();
 
     for feature in AARCH64_FEATURES {
         if let Some(feat) = feature.matches(&cpu_info) {
@@ -41,7 +41,7 @@ struct FeatureDescription {
 }
 
 impl FeatureDescription {
-    pub(super) fn matches(&self, cpu_info: &CPUInfo) -> Option<Feature> {
+    pub(super) fn matches(&self, cpu_info: &RegistersInfo) -> Option<Feature> {
         let register = cpu_info[self.register];
 
         if self.matcher.check_match(register) || self.matcher2.check_match(register) {
@@ -119,7 +119,7 @@ macro_rules! declare_features {
         use crate::features_list::RegisterMatches::{RegisterMatch, Fill};
         use crate::Category::*;
         use crate::ARMVersion::*;
-        use crate::cpu_info::Register::*;
+        use crate::registers_info::Register::*;
         const AARCH64_FEATURES: &[FeatureDescription] = &[
             $(
                 FeatureDescription{

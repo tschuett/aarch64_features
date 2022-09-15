@@ -1,4 +1,4 @@
-use crate::cpu_info::Register;
+use crate::registers_info::Register;
 
 // let aa64isar0: u64;
 // unsafe { asm!("mrs $0, ID_AA64ISAR0_EL1" : "=r"(aa64isar0)); }
