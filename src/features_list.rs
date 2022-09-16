@@ -103,6 +103,7 @@ impl RegisterMatches {
         match range.end() - range.start() + 1 {
             4 => shifted_bits & 0b1111,
             2 => shifted_bits & 0b0011,
+            1 => shifted_bits & 0b0001,
             value => {
                 panic!("unknown {}: {:?}", value, range);
             }

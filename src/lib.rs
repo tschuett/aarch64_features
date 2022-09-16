@@ -159,7 +159,7 @@
 //!```
 //!# References
 //!
-//! Most of the features checks are based on information from the [ARM Architecure Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/) 22 January 2021 G.a, 22 July 2021 G.b, and 4 February 2022 H.a.
+//! Most of the features checks are based on information from the [ARM Architecure Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/) 22 January 2021 G.a, 22 July 2021 G.b, 4 February 2022 H.a, and 19 August 2022 I.a.
 //!
 //! [ELF Hardware caps](https://github.com/torvalds/linux/blob/master/Documentation/arm64/elf_hwcaps.rst) file from the Linux kernel documents some feature registers.
 //!
@@ -194,9 +194,11 @@
 
 use crate::features_list::get_features;
 use std::collections::HashSet;
+use strum::IntoEnumIterator;
+use strum_macros::{EnumCount, EnumIter};
 
 #[allow(non_camel_case_types)]
-#[derive(Debug, PartialEq, Ord, PartialOrd, Copy, Clone, Hash, Eq)]
+#[derive(EnumIter, EnumCount, Debug, PartialEq, Ord, PartialOrd, Copy, Clone, Hash, Eq)]
 #[non_exhaustive]
 /// aarch64 features
 pub enum Feature {
@@ -626,11 +628,26 @@ mod generic {
 
 #[cfg(test)]
 mod tests {
+    use strum::EnumCount;
+
     use super::*;
 
     #[test]
     fn it_works() {
         assert_eq!(2 + 2, 4);
+    }
+
+    #[test]
+    fn check_number_of_variant() {
+        // not exposed to userspace!
+        //for feature in Feature::iter() {
+        //    let feats = features_list::get_features();
+        //    if let None = feats.get(&feature) {
+        //        println!("feature not covered: {:?}", feature);
+        //    }
+        //}
+
+        assert_eq!(Feature::COUNT, 146);
     }
 
     #[test]

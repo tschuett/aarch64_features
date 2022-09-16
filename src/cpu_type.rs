@@ -68,7 +68,7 @@ pub fn detect_core() -> Core {
 pub fn detect_core() {}
 
 fn is_neoverse_n1(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Arm) // arm
+    midr.is_arm() // arm
         && midr.check_variant(0x4)
         && midr.check_architecture(Architecture::IDRegisters)
         && midr.check_part_num(ARM_NEOVERSE_N1_PART_NUM) // N1
@@ -77,7 +77,7 @@ fn is_neoverse_n1(midr: &Midr) -> bool {
 
 // https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register
 fn is_neoverse_n2(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Arm) // arm
+    midr.is_arm() // arm
         && midr.check_variant(0x0) // r0p0
         && midr.check_architecture(Architecture::IDRegisters)
         && midr.check_part_num(ARM_NEOVERSE_N2_PART_NUM) // N2
@@ -85,7 +85,7 @@ fn is_neoverse_n2(midr: &Midr) -> bool {
 }
 
 fn is_neoverse_v1(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Arm) // arm
+    midr.is_arm() // arm
         && midr.check_variant(0x1) // r1p1
         && midr.check_architecture(Architecture::IDRegisters)
         && midr.check_part_num(ARM_NEOVERSE_V1_PART_NUM) // V1
@@ -93,7 +93,7 @@ fn is_neoverse_v1(midr: &Midr) -> bool {
 }
 
 fn is_neoverse_v2(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Arm) // arm
+    midr.is_arm() // arm
         && midr.check_part_num(ARM_NEOVERSE_V2_PART_NUM) // V2
 }
 
@@ -102,12 +102,12 @@ fn is_a64fx(midr: &Midr) -> bool {
 }
 
 fn is_apple_m1(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Apple)
+    midr.is_apple()
         && midr.check_part_num_or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)
 }
 
 fn is_apple_m1_pro(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Apple)
+    midr.is_apple()
         && midr.check_part_num_or(
             APPLE_M1_FIRESTORM_PRO_PART_NUM,
             APPLE_M1_ICESTORM_PRO_PART_NUM,
@@ -115,7 +115,7 @@ fn is_apple_m1_pro(midr: &Midr) -> bool {
 }
 
 fn is_apple_m1_max(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Apple)
+    midr.is_apple()
         && midr.check_part_num_or(
             APPLE_M1_FIRESTORM_MAX_PART_NUM,
             APPLE_M1_ICESTORM_MAX_PART_NUM,

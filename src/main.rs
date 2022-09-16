@@ -1,4 +1,8 @@
+use strum::EnumCount;
 fn main() {
+    let count = aarch64_features::Feature::COUNT;
+    println!("number of features: {count}");
+
     #[cfg(not(target_arch = "aarch64"))]
     {
         println!("this not an aarch64 cpu!");

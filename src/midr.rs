@@ -157,6 +157,14 @@ impl Midr {
         self.implementer == im
     }
 
+    pub(crate) fn is_arm(&self) -> bool {
+        self.implementer == Implementer::Arm
+    }
+
+    pub(crate) fn is_apple(&self) -> bool {
+        self.implementer == Implementer::Apple
+    }
+
     pub(crate) fn check_variant(&self, im: u64) -> bool {
         self.variant == im as u64
     }
