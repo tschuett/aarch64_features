@@ -293,9 +293,46 @@ declare_features!(
     (FEAT_SME_I16I64,  Armv9_2, ID_AA64SMFR0_EL1,  RegisterMatch(52..=55, Value(0b1111)),       Fill,                                      Sme,       "16-bit to 64-bit integer widening outer product instructions"),
 
     // Armv9.3
-    (FEAT_BRBEv1p1,    Armv9_3,  ID_AA64DFR0_EL1,  RegisterMatch(52..=55, Value(0b0010)),       Fill,                                      Jump,      "Branch Record Buffer Extension"),
+    (FEAT_BRBEv1p1,      Armv9_3,  ID_AA64DFR0_EL1,  RegisterMatch(52..=55, Value(0b0010)),       Fill,                                      Jump,      "Branch Record Buffer Extension"),
+    // missing: found by testing
+    (FEAT_F32MM,         Armv8_2,  ID_AA64ZFR0_EL1,  RegisterMatch(52..=55, Value(0b0001)),       Fill,                                      Float,     "Single-precision Matrix Multiplication"),
+    (FEAT_F64MM,         Armv8_2,  ID_AA64ZFR0_EL1,  RegisterMatch(56..=59, Value(0b0001)),       Fill,                                      Float,     "Single-precision Matrix Multiplication"),
+    (FEAT_SVE,           Armv8_2,  ID_AA64PFR0_EL1,  RegisterMatch(32..=35, Value(0b0001)),       Fill,                                      Float,     "Scalable Vector Extension"),
+    (FEAT_CP15SDISABLE2, Armv8_0,  NoRegister     ,  Fill                                 ,       Fill,                                      Unknown,   "CP15SDISABLE2"),
+    (FEAT_PCSRv8,        Armv8_0,  EDDEVID        ,  RegisterMatch(0..=3,   Value(0b0011)),       Fill,                                      Unknown,   "PC Sample-based Profiling Extension"),
 );
 
 // FIXME: missing CRC32 [19-16]
 
 // CRC32 instructions have no features
+
+// FIXME######: missing FEAT_CP15SDISABLE2
+// FIXME: missing FEAT_PCSRv8
+// FIXME: missing FEAT_HPDS
+// FIXME: missing FEAT_ASMv8p2
+// FIXME: missing FEAT_FPACCOMBINE
+// FIXME: missing FEAT_PACQARMA3
+// FIXME: missing FEAT_CONSTPACFIELD
+// FIXME: missing FEAT_GTG
+// FIXME: missing FEAT_LPA2
+// FIXME: missing FEAT_PMUv3_TH
+// FIXME: missing FEAT_RME
+// FIXME: missing FEAT_RAS
+// FIXME: missing FEAT_SPE
+
+#[cfg(test)]
+mod tests {
+    use strum::IntoEnumIterator;
+
+    use super::*;
+
+    #[test]
+    fn check_number_of_variant() {
+        // not exposed to userspace!
+        for feature in Feature::iter() {
+            if let None = AARCH64_FEATURES.iter().find(|feat| feat.feature == feature) {
+                println!("feature not covered: {:?}", feature);
+            }
+        }
+    }
+}

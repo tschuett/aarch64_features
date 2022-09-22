@@ -54,6 +54,7 @@ pub(crate) fn read_register(register: Register) -> u64 {
         Register::CTR_EL0 => unsafe {
             asm!("mrs {tmp}, CTR_EL0", tmp = out(reg) tmp);
         },
+        Register::NoRegister => tmp = u64::MAX,
     }
 
     tmp

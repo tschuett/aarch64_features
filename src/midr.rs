@@ -1,7 +1,7 @@
 use std::fmt;
 
 #[non_exhaustive]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub(crate) enum Implementer {
     Arm = 0x41,
     Fujitsu = 0x46,
@@ -50,7 +50,7 @@ impl fmt::Display for Implementer {
     }
 }
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub(crate) enum Architecture {
     Armv4 = 0x01,
     Armv4T = 0x02,
@@ -117,7 +117,9 @@ impl fmt::Display for Architecture {
     }
 }
 
-pub(crate) struct Midr {
+#[derive(Debug)]
+/// A MIDR_EL1 register
+pub struct Midr {
     implementer: Implementer,
     variant: u64,
     architecture: Architecture,
@@ -126,12 +128,20 @@ pub(crate) struct Midr {
 }
 
 impl Midr {
-    pub(crate) fn new() -> Self {
-        use std::arch::asm;
+    /// Create a new Midr
+    pub fn new() -> Self {
         let mut midr: u64;
 
-        unsafe {
-            asm!("mrs {midr}, MIDR_EL1", midr = out(reg) midr);
+        #[cfg(target_arch = "aarch64")]
+        {
+            use std::arch::asm;
+            unsafe {
+                asm!("mrs {midr}, MIDR_EL1", midr = out(reg) midr);
+            }
+        }
+        #[cfg(not(target_arch = "aarch64"))]
+        {
+            midr = 0;
         }
 
         Self::extract_parts(midr)
@@ -191,6 +201,12 @@ impl Midr {
         println!("architecture: {}", self.architecture);
         println!("part_num    : {}", self.part_num);
         println!("revision    : {}", self.revision);
+    }
+}
+
+impl Default for Midr {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

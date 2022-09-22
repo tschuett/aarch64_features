@@ -4,6 +4,7 @@
 //! It focuses on modern data-center cores from Arm, Apple cores, and other high-performance cores.
 //!
 //! [The MIDR for the Neoverse N2](https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register) describes the contents of MIDR_EL1 registern on Arm Neoverse N2 cores.
+//! The gcc [aarch64 cores](https://github.com/gcc-mirror/gcc/blob/master/gcc/config/aarch64/aarch64-cores.def) has a elaborate list of cores and partial MIDR_EL1 definitions.
 
 use crate::midr::Architecture;
 use crate::midr::Implementer;
@@ -31,41 +32,43 @@ pub enum Core {
     AppleM1Max,
     /// Ampere 1
     Ampere1,
-    /// unknown core
-    Unknown,
 }
 
-#[cfg(target_arch = "aarch64")]
-/// try to detect the current core
-pub fn detect_core() -> Core {
-    let midr = Midr::new();
+impl TryFrom<Midr> for Core {
+    type Error = &'static str;
 
-    if is_neoverse_n1(&midr) {
-        Core::NeoverseN1
-    } else if is_neoverse_n2(&midr) {
-        Core::NeoverseN2
-    } else if is_neoverse_v1(&midr) {
-        Core::NeoverseV1
-    } else if is_neoverse_v2(&midr) {
-        Core::NeoverseV2
-    } else if is_a64fx(&midr) {
-        Core::A64FX
-    } else if is_apple_m1(&midr) {
-        Core::AppleM1
-    } else if is_apple_m1_pro(&midr) {
-        Core::AppleM1Pro
-    } else if is_apple_m1_max(&midr) {
-        Core::AppleM1Max
-    } else if is_ampere_1(&midr) {
-        Core::Ampere1
-    } else {
-        Core::Unknown
+    #[cfg(target_arch = "aarch64")]
+    /// try to detect the current core
+    fn try_from(value: Midr) -> Result<Self, Self::Error> {
+        if is_neoverse_n1(&value) {
+            return Ok(Core::NeoverseN1);
+        } else if is_neoverse_n2(&value) {
+            return Ok(Core::NeoverseN2);
+        } else if is_neoverse_v1(&value) {
+            return Ok(Core::NeoverseV1);
+        } else if is_neoverse_v2(&value) {
+            return Ok(Core::NeoverseV2);
+        } else if is_a64fx(&value) {
+            return Ok(Core::A64FX);
+        } else if is_apple_m1(&value) {
+            return Ok(Core::AppleM1);
+        } else if is_apple_m1_pro(&value) {
+            return Ok(Core::AppleM1Pro);
+        } else if is_apple_m1_max(&value) {
+            return Ok(Core::AppleM1Max);
+        } else if is_ampere_1(&value) {
+            return Ok(Core::Ampere1);
+        }
+
+        Err("Unknown core")
+    }
+
+    #[cfg(not(target_arch = "aarch64"))]
+    /// try to detect the current core
+    fn try_from(_value: Midr) -> Result<Self, Self::Error> {
+        return Err("Unsupported arch");
     }
 }
-
-#[cfg(not(target_arch = "aarch64"))]
-/// try to detect the current core
-pub fn detect_core() {}
 
 fn is_neoverse_n1(midr: &Midr) -> bool {
     midr.is_arm() // arm
@@ -173,4 +176,8 @@ mod tests {
 
 // https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/cputype.h
 
-// https://github.com/gcc-mirror/gcc/blob/master/gcc/config/aarch64/aarch64-cores.def#L142
+// https://github.com/gcc-mirror/gcc/blob/master/gcc/config/aarch64/aarch64-cores.def
+
+// https://reviews.llvm.org/D134351
+
+// https://reviews.llvm.org/D134352

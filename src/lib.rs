@@ -194,7 +194,6 @@
 
 use crate::features_list::get_features;
 use std::collections::HashSet;
-use strum::IntoEnumIterator;
 use strum_macros::{EnumCount, EnumIter};
 
 #[allow(non_camel_case_types)]
@@ -574,11 +573,14 @@ mod macos_aarch64 {
     pub(crate) mod cpu;
 }
 
+/// Detector for core kinds
 pub mod cpu_type;
+
+/// Representation of the MIDR_EL1 register
+pub mod midr;
 
 mod aarch64;
 mod features_list;
-mod midr;
 mod registers_info;
 
 /// The list of features that are exported by the kernel to userspace.
@@ -629,6 +631,7 @@ mod generic {
 #[cfg(test)]
 mod tests {
     use strum::EnumCount;
+    //use strum::IntoEnumIterator;
 
     use super::*;
 

@@ -11,7 +11,7 @@ fn main() {
     #[cfg(target_arch = "aarch64")]
     {
         use aarch64_features::check_features;
-        use aarch64_features::cpu_type::detect_core;
+        use aarch64_features::midr::Midr;
         let features = check_features();
 
         println!();
@@ -24,6 +24,8 @@ fn main() {
 
         println!();
 
-        detect_core();
+        let midr = Midr::new();
+
+        let core = aarch64_features::cpu_type::Core::try_from(midr).unwrap();
     }
 }

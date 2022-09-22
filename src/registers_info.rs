@@ -22,6 +22,7 @@ pub(crate) enum Register {
     ID_AA64ISAR2_EL1,
     TRCDEVARCH,
     ID_AA64ZFR0_EL1,
+    NoRegister,
 }
 
 pub(crate) struct RegistersInfo {
@@ -92,6 +93,7 @@ impl Index<Register> for RegistersInfo {
             Register::ID_AA64ISAR2_EL1 => &self.id_aa64isar2_el1,
             Register::TRCDEVARCH => &self.trcdevarch,
             Register::ID_AA64ZFR0_EL1 => &self.id_aa64zfr0,
+            Register::NoRegister => todo!(),
         }
     }
 }
