@@ -65,10 +65,6 @@
 //!
 //! It removes the need to understand the details of low-level AArch64 system programming.
 //!
-//!# Virtualization
-//!
-//! Armv8.1 introduced the mandatory [FEAT_VHE][Feature::FEAT_VHE], the virtualization host extensions. Armv8.3 brought the optional [FEAT_NV][Feature::FEAT_NV] with nested virtualization support. This work was continued in Armv8.4 with the optional [FEAT_NV2][Feature::FEAT_NV2] for enhanced nested virtualization support. Note that the ARM Neoverse V1 supports [enhanced nested virtualization](https://developer.arm.com/documentation/101427/0101/Register-descriptions/AArch64-system-registers/ID-AA64MMFR2-EL1--AArch64-Memory-Model-Feature-Register-2--EL1).
-//!
 //!# Atomic operations
 //!
 //! Armv8.1 brought the mandatory [FEAT_LSE][Feature::FEAT_LSE]. It
@@ -773,7 +769,7 @@ mod tests {
         //    }
         //}
 
-        assert_eq!(Feature::COUNT, 146);
+        assert_eq!(Feature::COUNT, 201);
     }
 
     #[test]
