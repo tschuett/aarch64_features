@@ -26,6 +26,6 @@ fn main() {
 
         let midr = Midr::new();
 
-        let core = aarch64_features::cpu_type::Core::try_from(midr).unwrap();
+        let _core = aarch64_features::cpu_type::Core::try_from(midr).unwrap();
     }
 }

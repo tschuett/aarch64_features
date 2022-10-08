@@ -130,14 +130,22 @@ fn is_ampere_1(midr: &Midr) -> bool {
         && midr.check_part_num(AMPERE_1_PART_NUM) // ampere 1
 }
 
-const APPLE_M1_FIRESTORM_PART_NUM: u64 = 0x22;
-const APPLE_M1_ICESTORM_PART_NUM: u64 = 0x23;
+/// arm/cpuid.h (mobile phone?)
+const APPLE_ICESTORM_PART_NUM: u64 = 0x20;
+const APPLE_FIRESTORM_PART_NUM: u64 = 0x21;
 
-const APPLE_M1_FIRESTORM_PRO_PART_NUM: u64 = 0x24;
-const APPLE_M1_ICESTORM_PRO_PART_NUM: u64 = 0x25;
+const APPLE_M1_ICESTORM_PART_NUM: u64 = 0x22;
+const APPLE_M1_FIRESTORM_PART_NUM: u64 = 0x23;
 
-const APPLE_M1_FIRESTORM_MAX_PART_NUM: u64 = 0x28;
-const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x29;
+const APPLE_M1_ICESTORM_PRO_PART_NUM: u64 = 0x24;
+const APPLE_M1_FIRESTORM_PRO_PART_NUM: u64 = 0x25;
+
+const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x28;
+const APPLE_M1_FIRESTORM_MAX_PART_NUM: u64 = 0x29;
+
+/// arm/cpuid.h (mobile phone?)
+const APPLE_BLIZZARD_PART_NUM: u64 = 0x30;
+const APPLE_AVALANCHE_PART_NUM: u64 = 0x31;
 
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
@@ -178,6 +186,11 @@ mod tests {
 
 // https://github.com/gcc-mirror/gcc/blob/master/gcc/config/aarch64/aarch64-cores.def
 
+// for recent Apple CPUs
 // https://reviews.llvm.org/D134351
 
+// V2
 // https://reviews.llvm.org/D134352
+
+// 4 Februar
+// https://github.com/apple-oss-distributions/xnu/blob/main/osfmk/arm/cpuid.c

@@ -6,7 +6,8 @@
     missing_debug_implementations,
     rust_2018_idioms,
     unreachable_pub,
-    future_incompatible
+    future_incompatible,
+    unused_tuple_struct_fields
 )]
 
 //! This crate checks for available features of AArch64 cores. It
@@ -68,13 +69,18 @@
 //!
 //! Armv8.1 introduced the mandatory [FEAT_VHE][Feature::FEAT_VHE], the virtualization host extensions. Armv8.3 brought the optional [FEAT_NV][Feature::FEAT_NV] with nested virtualization support. This work was continued in Armv8.4 with the optional [FEAT_NV2][Feature::FEAT_NV2] for enhanced nested virtualization support. Note that the ARM Neoverse V1 supports [enhanced nested virtualization](https://developer.arm.com/documentation/101427/0101/Register-descriptions/AArch64-system-registers/ID-AA64MMFR2-EL1--AArch64-Memory-Model-Feature-Register-2--EL1).
 //!
-//!# Pointer Authentication
-//!
-//! [FEAT_PAuth][Feature::FEAT_PAuth] and [FEAT_EPAC][Feature::FEAT_EPAC] [FEAT_PAuth2][Feature::FEAT_PAuth2], [FEAT_FPAC][Feature::FEAT_FPAC] and [FEAT_FPACCOMBINE][Feature::FEAT_FPACCOMBINE]
-//!
 //!# Atomic operations
 //!
-//! Armv8.1 brought the mandatory [FEAT_LSE][Feature::FEAT_LSE]. It introduced the first atomic read-modify-write operations. [FEAT_LRCPC][Feature::FEAT_LRCPC] [FEAT_LRCPC2][Feature::FEAT_LRCPC2]
+//! Armv8.1 brought the mandatory [FEAT_LSE][Feature::FEAT_LSE]. It
+//! introduced the first atomic read-modify-write operations. Before,
+//! there were read-exclusive store-excusive loops. They are
+//! challenging for compilers and have issues under
+//! contention. Armv8.3 brought
+//! [FEAT_LRCPC][Feature::FEAT_LRCPC]. They are weaker atomics to
+//! align AArch64 with the C memory model. Armv8.4 brought
+//! [FEAT_LRCPC2][Feature::FEAT_LRCPC2].
+//! [FEAT_LRCPC3][Feature::FEAT_LRCPC3]
+//! [FEAT_LSE128][Feature::FEAT_LSE128]
 //!
 //!# Status
 //!
@@ -88,11 +94,10 @@
 //! - [x] Armv8.6-A
 //! - [x] Armv8.7-A
 //! - [x] Armv8.8-A
+//! - [ ] Armv8.9-A
 //! - [x] Armv9.2-A
 //! - [x] Armv9.3-A
-//! - [ ] SVE
-//! - [ ] SVE2
-//! - [ ] Optional and Mandatory
+//! - [ ] Armv9.4-A
 //!
 //! # Usage
 //! This crate is [on crates.io](https://crates.io/crates/aarch64_features) and can be
@@ -477,6 +482,8 @@ pub enum Feature {
     /// Debug v8.8
     FEAT_Debugv8p8,
 
+    // Armv8.8
+
     // Armv9.0
     /// Scalable Vector Extension version 2
     FEAT_SVE2,
@@ -528,6 +535,120 @@ pub enum Feature {
 
     /// Advanced SIMD Extension
     FEAT_AdvSIMD,
+
+    // 2022 Architecture Extensions
+    /// Address Breakpoint Linking extension
+    FEAT_ABLE,
+    /// RASv2 Additional Error syndrome reporting, for Device and Normal memory
+    FEAT_ADERR,
+    /// RASv2 Additional Error syndrome reporting, for Device and Normal memory
+    FEAT_ANERR,
+    /// Memory Attribute Index Enhancement
+    FEAT_AIE,
+    /// Non-widening BFloat16 to BFloat16 arithmetic for SVE2.1 and SME2.1
+    FEAT_B16B16,
+    /// A new instruction CLRBHB is added in HINT space
+    FEAT_CLRBHB,
+    /// Common Short Sequence Compression scalar integer instructions
+    FEAT_CSSC,
+    /// New identification mechanism for Branch History information
+    FEAT_CSV2_3,
+    /// 128-bit Translation Tables, 56 bit PA
+    FEAT_D128,
+    /// Debug 2022
+    FEAT_Debugv8p9,
+    /// Imposes restrictions on branch hisory speculation around exceptions
+    FEAT_ECBHB,
+    /// ETE support for v9.3
+    FEAT_ETEv1p3,
+    /// Fine-grained traps 2
+    FEAT_FGT2,
+    /// Hardware managed Access Flag for Table descriptors
+    FEAT_HAFT,
+    /// Instrumentation trace extension
+    FEAT_ITE,
+    /// Load-Acquire RCpc instructions version 3
+    FEAT_LRCPC3,
+    /// 128-bit Atomics
+    FEAT_LSE128,
+    /// 56-bit VA
+    FEAT_LVA3,
+    /// Memory Encryption Contexts
+    FEAT_MEC,
+    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    FEAT_MTE4,
+    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    FEAT_MTE_CANONICAL_TAGS,
+    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    FEAT_MTE_TAGGED_FAR,
+    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    FEAT_MTE_STORE_ONLY,
+    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    FEAT_MTE_NO_ADDRESS_TAGS,
+    /// Asymmetric Tag Check Fault handling
+    FEAT_MTE_ASYM_FAULT,
+    /// Asynchronous Tag Check Fault handling
+    FEAT_MTE_ASYNC,
+    /// Allocation tag access permission
+    FEAT_MTE_PERM,
+    /// PCSR disable control
+    FEAT_PCSRv8p9,
+    /// Permission model enhancements
+    FEAT_PIE,
+    /// Permission model enhancements
+    FEAT_POE,
+    /// Permission model enhancements
+    FEAT_S1PIE,
+    /// Permission model enhancements
+    FEAT_S2PIE,
+    /// Permission model enhancements
+    FEAT_S1POE,
+    /// Permission model enhancements
+    FEAT_S2POE,
+    /// EL0 access controls for PMU event counters
+    FEAT_PMUv3p9,
+    /// PMU event edge detection
+    FEAT_PMUv3_EDGE,
+    /// PMU instruction counter
+    FEAT_PMUv3_ICNTR,
+    /// PMU snapshot
+    FEAT_PMUv3_SS,
+    /// Prefetching enhancements
+    FEAT_PRFMSLC,
+    /// Reliability, Availability, and Serviceability (RAS) Extension version 2
+    FEAT_RASv2,
+    /// RPRFM range prefetch hint instruction
+    FEAT_RPRFM,
+    /// Extension to SCTLR_ELx
+    FEAT_SCTLR2,
+    /// Synchronous Exception-based event profiling
+    FEAT_SEBEP,
+    /// Non-widening half-precision FP16 to FP16 arithmetic for SME2.1
+    FEAT_SME_F16F16,
+    /// Scalable Matrix Extension versions SME2
+    FEAT_SME2,
+    /// Scalable Matrix Extension versions SME2.1
+    FEAT_SME2p1,
+    //    /// Adds new Clear Other Speculative Predictions instruction
+    //    FEAT_SPECRES,
+    /// System PMU
+    FEAT_SPMU,
+    /// Addtional SPE events
+    FEAT_SPEv1p4,
+    /// SPE filtering by data source
+    FEAT_SPE_FDS,
+    /// Scalable Vector Extension version SVE2.1
+    FEAT_SVE2p1,
+    /// 128-bit System instructions
+    FEAT_SYSINSTR128,
+    /// 128-bit System registers
+    FEAT_SYSREG128,
+    /// Extension to TCR_ELx
+    FEAT_TCR2,
+    /// Translation Hardening Extension
+    FEAT_THE,
+    /// TRBE external mode
+    FEAT_TRBE_EXT,
 }
 
 /// test for all aarch64 features
@@ -617,10 +738,12 @@ enum ARMVersion {
     Armv8_6,
     Armv8_7,
     Armv8_8,
+    Armv8_9,
     Armv9_0,
     Armv9_1,
     Armv9_2,
     Armv9_3,
+    Armv9_4,
 }
 
 #[cfg(not(target_arch = "aarch64"))]
@@ -706,3 +829,5 @@ mod tests {
 // Armv8.1-M
 
 // TODO FEAT_EPAC
+
+// https://community.arm.com/arm-community-blogs/b/architectures-and-processors-blog/posts/arm-a-profile-architecture-2022

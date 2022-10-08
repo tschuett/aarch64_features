@@ -6,7 +6,7 @@ use crate::registers_info::Register;
 #[cfg(target_arch = "aarch64")]
 pub(crate) fn read_register(register: Register) -> u64 {
     use std::arch::asm;
-    let mut tmp: u64;
+    let tmp: u64;
 
     match register {
         Register::ID_AA64DFR0_EL1 => unsafe {
