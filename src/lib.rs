@@ -168,6 +168,8 @@
 //!
 //! ARMv9 features are from the [Arm Architecture Reference Manual Supplement Armv9, for Armv9-A architecture profile](https://developer.arm.com/documentation/ddi0608/latest)  Issue A.a.
 //!
+//! [Feature names in A-profile architecture](https://developer.arm.com/downloads/-/exploration-tools/feature-names-for-a-profile) provide a list of the future features.
+//!
 //!# Caveats
 //!
 //!The Linux kernel only exports a subset of the feature to userspace, see [features](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst). The exported features change over time. Thus the reported features of this crate may change between releases, see [exposed features](crate::linux_exported_features::EXPORTED_FEATURES).
@@ -571,15 +573,15 @@ pub enum Feature {
     FEAT_LVA3,
     /// Memory Encryption Contexts
     FEAT_MEC,
-    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    /// Memory Tagging Extension
     FEAT_MTE4,
-    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    /// Support for Canonical tag checking
     FEAT_MTE_CANONICAL_TAGS,
-    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    /// Reporting of all non-address bits on a fault
     FEAT_MTE_TAGGED_FAR,
-    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    /// Store-only Tag checking
     FEAT_MTE_STORE_ONLY,
-    /// Support for Canonical tag checking, reporting of all non-address bits on a fault, Store-only Tag checking, Memory tagging with Address tagging disabled
+    /// Memory tagging with Address tagging disabled
     FEAT_MTE_NO_ADDRESS_TAGS,
     /// Asymmetric Tag Check Fault handling
     FEAT_MTE_ASYM_FAULT,
