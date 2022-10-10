@@ -27,6 +27,7 @@ supported configurations:
 
 - Linux AArch64
 - macOS AArch64
+- Windows on ARM.
 - anything not AArch64
 
 ## Caveats
@@ -36,8 +37,6 @@ see [feature
 registers](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst). The set
 changes over time and thus the reported features of this crate can
 change between versions.
-
-Windows on ARM fails to compile.
 
 If you have a big little cpu, then you may want to pin the current thread.
 
