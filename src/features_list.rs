@@ -336,3 +336,5 @@ mod tests {
         }
     }
 }
+
+// https://github.com/torvalds/linux/blob/master/arch/arm64/kernel/cpufeature.c

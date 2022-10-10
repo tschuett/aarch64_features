@@ -2,7 +2,7 @@ use crate::Feature;
 
 /// These are the features exported by the kernel to userspace, see [kernel](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst).
 /// The list was last updated at 16.8.2022 (non-exhaustive).
-pub const EXPORTED_FEATURES: &[Feature] = &[
+pub(crate) const EXPORTED_FEATURES: &[Feature] = &[
     // ID_AA64ISAR0_EL1
     Feature::FEAT_RNG,     // RNDR
     Feature::FEAT_FlagM2,  // TS

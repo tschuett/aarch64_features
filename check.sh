@@ -8,6 +8,9 @@ rustup target add aarch64-pc-windows-msvc
 cargo check --target aarch64-unknown-linux-gnu --target aarch64-apple-darwin --target aarch64-pc-windows-msvc
 #cargo check --target aarch64-pc-windows-msvc
 
-cargo clippy --target aarch64-unknown-linux-gnu
+RUSTFLAGS="$RUSTFLAGS -A dead_code" cargo clippy
+RUSTFLAGS="$RUSTFLAGS -A dead_code" cargo clippy --target aarch64-unknown-linux-gnu
 
 cargo test
+
+

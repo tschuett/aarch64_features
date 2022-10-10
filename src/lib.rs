@@ -700,6 +700,11 @@ mod windows_aarch64 {
     pub(crate) mod cpu;
 }
 
+#[cfg(not(target_arch = "aarch64"))]
+mod generic {
+    pub(crate) mod cpu;
+}
+
 /// Detector for core kinds
 pub mod cpu_type;
 
@@ -711,7 +716,7 @@ mod features_list;
 mod registers_info;
 
 /// The list of features that are exported by the kernel to userspace.
-pub mod linux_exported_features;
+mod linux_exported_features;
 
 #[allow(unused)]
 #[derive(Hash, Eq, PartialEq)]
@@ -750,11 +755,6 @@ enum ARMVersion {
     Armv9_2,
     Armv9_3,
     Armv9_4,
-}
-
-#[cfg(not(target_arch = "aarch64"))]
-mod generic {
-    pub(crate) mod cpu;
 }
 
 #[cfg(test)]

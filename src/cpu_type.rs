@@ -66,7 +66,7 @@ impl TryFrom<Midr> for Core {
     #[cfg(not(target_arch = "aarch64"))]
     /// try to detect the current core
     fn try_from(_value: Midr) -> Result<Self, Self::Error> {
-        return Err("Unsupported arch");
+        Err("Unsupported arch")
     }
 }
 

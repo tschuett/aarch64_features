@@ -67,22 +67,21 @@ impl TryFrom<u64> for Architecture {
 
     fn try_from(value: u64) -> Result<Self, Self::Error> {
         if value == 0x01 {
-            Ok(Architecture::Armv4)
+            return Ok(Architecture::Armv4);
         } else if value == 0x02 {
-            Ok(Architecture::Armv4T)
+            return Ok(Architecture::Armv4T);
         } else if value == 0x03 {
-            Ok(Architecture::Armv5)
+            return Ok(Architecture::Armv5);
         } else if value == 0x04 {
-            Ok(Architecture::Armv5T)
+            return Ok(Architecture::Armv5T);
         } else if value == 0x05 {
-            Ok(Architecture::Armv5TE)
+            return Ok(Architecture::Armv5TE);
         } else if value == 0x06 {
-            Ok(Architecture::Armv5TEJ)
+            return Ok(Architecture::Armv5TEJ);
         } else if value == 0x07 {
-            Ok(Architecture::IDRegisters)
-        } else {
-            Err("Value greater than 0x07")
+            return Ok(Architecture::IDRegisters);
         }
+        Err("Value greater than 0x07")
     }
 }
 
@@ -177,7 +176,7 @@ impl Midr {
     }
 
     pub(crate) fn check_variant(&self, im: u64) -> bool {
-        self.variant == im as u64
+        self.variant == im
     }
 
     pub(crate) fn check_architecture(&self, arch: Architecture) -> bool {
@@ -193,7 +192,7 @@ impl Midr {
     }
 
     pub(crate) fn check_revision(&self, im: u64) -> bool {
-        self.revision == im as u64
+        self.revision == im
     }
 
     fn dump(&self) {
