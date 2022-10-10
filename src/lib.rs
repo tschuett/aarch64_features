@@ -679,6 +679,9 @@ use crate::macos_aarch64::cpu::{check_availability, is_exposed_to_userspace};
 #[cfg(all(target_arch = "aarch64", target_os = "linux"))]
 use crate::linux_aarch64::cpu::{check_availability, is_exposed_to_userspace};
 
+#[cfg(all(target_arch = "aarch64", target_os = "windows"))]
+use crate::windows_aarch64::cpu::{check_availability, is_exposed_to_userspace};
+
 #[cfg(not(target_arch = "aarch64"))]
 use crate::generic::cpu::{check_availability, is_exposed_to_userspace};
 
@@ -689,6 +692,11 @@ mod linux_aarch64 {
 
 #[cfg(all(target_arch = "aarch64", target_os = "macos"))]
 mod macos_aarch64 {
+    pub(crate) mod cpu;
+}
+
+#[cfg(all(target_arch = "aarch64", target_os = "windows"))]
+mod windows_aarch64 {
     pub(crate) mod cpu;
 }
 

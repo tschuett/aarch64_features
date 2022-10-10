@@ -130,21 +130,22 @@ pub struct Midr {
 impl Midr {
     /// Create a new Midr
     pub fn new() -> Self {
-        let mut midr: u64;
-
         #[cfg(target_arch = "aarch64")]
         {
+            let mut midr: u64;
             use std::arch::asm;
             unsafe {
                 asm!("mrs {midr}, MIDR_EL1", midr = out(reg) midr);
             }
+
+            Self::extract_parts(midr)
         }
         #[cfg(not(target_arch = "aarch64"))]
         {
-            midr = 0;
-        }
+            let midr = 0;
 
-        Self::extract_parts(midr)
+            Self::extract_parts(midr)
+        }
     }
 
     fn extract_parts(midr: u64) -> Self {
