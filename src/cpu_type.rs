@@ -81,13 +81,25 @@ const ARM_NEOVERSE_V2_PART_NUM: u64 = 0xD4F;
 
 const AMPERE_1_PART_NUM: u64 = 0xac3;
 
-const FUJITSU_A64FX_PART_NUM: u64 = 0x01;
+const FUJITSU_A64FX_PART_NUM: u64 = 0x001;
 
 #[cfg(test)]
 mod tests {
 
     use super::*;
     use crate::midr::MidrBuilder;
+
+    fn try_from(value: &Midr) -> Option<Core> {
+        for core_description in CORES {
+            if value.check_implementer(core_description.implementer)
+                && core_description.variant.check_match(&value)
+            {
+                return Some(core_description.core);
+            }
+        }
+
+        None
+    }
 
     #[test]
     fn test_apple_m1() {
@@ -96,12 +108,24 @@ mod tests {
             .part_num(APPLE_M1_FIRESTORM_PART_NUM)
             .build();
 
-        //assert!(is_apple_m1(&midr));
+        assert!(midr.check_part_num(APPLE_M1_FIRESTORM_PART_NUM));
+        assert!(midr.check_implementer(Apple));
+
+        assert!(Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM).check_match(&midr));
+
+        let core_option = try_from(&midr);
+        assert!(core_option.is_some());
+
+        assert!(core_option.unwrap_or(AppleM1Max) == AppleM1);
 
         let midr = MidrBuilder::new()
             .implementer(Implementer::Apple)
             .part_num(APPLE_M1_ICESTORM_PART_NUM)
             .build();
+
+        let core_option = try_from(&midr);
+        assert!(core_option.is_some());
+        assert!(core_option.unwrap_or(AppleM1Max) == AppleM1);
 
         //assert!(is_apple_m1(&midr));
     }
@@ -129,21 +153,21 @@ mod tests {
 struct CoreDescription {
     core: Core,
     implementer: Implementer,
-    variant: VariantMatcher,
+    variant: PartNumMatcher,
 }
 
 #[allow(unused)]
 #[derive(Eq, PartialEq)]
-enum VariantMatcher {
+enum PartNumMatcher {
     One(u64),
     Or(u64, u64),
 }
 
-impl VariantMatcher {
+impl PartNumMatcher {
     fn check_match(&self, midr: &Midr) -> bool {
         match self {
-            VariantMatcher::One(one) => midr.check_variant(*one),
-            VariantMatcher::Or(one, two) => midr.check_variant(*one) || midr.check_variant(*two),
+            PartNumMatcher::One(one) => midr.check_part_num(*one),
+            PartNumMatcher::Or(one, two) => midr.check_part_num(*one) || midr.check_part_num(*two),
         }
     }
 }
@@ -153,7 +177,7 @@ macro_rules! declare_cores {
         ($core:ident, $implementer:ident, $variant:expr),
     )+) => {
         /// My favorite cores
-        use crate::cpu_type::VariantMatcher::*;
+        use crate::cpu_type::PartNumMatcher::*;
         use crate::midr::Implementer::*;
         use crate::cpu_type::Core::*;
         const CORES: &[CoreDescription] = &[

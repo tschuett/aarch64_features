@@ -326,15 +326,15 @@ mod tests {
 
     use super::*;
 
-    #[test]
-    fn check_number_of_variant() {
-        // not exposed to userspace!
-        for feature in Feature::iter() {
-            if let None = AARCH64_FEATURES.iter().find(|feat| feat.feature == feature) {
-                println!("feature not covered: {:?}", feature);
-            }
-        }
-    }
+    //    #[test]
+    //    fn check_number_of_variant() {
+    //        // not exposed to userspace!
+    //        for feature in Feature::iter() {
+    //            if let None = AARCH64_FEATURES.iter().find(|feat| feat.feature == feature) {
+    //                println!("feature not covered: {:?}", feature);
+    //            }
+    //        }
+    //    }
 }
 
 // https://github.com/torvalds/linux/blob/master/arch/arm64/kernel/cpufeature.c

@@ -195,11 +195,11 @@ impl Midr {
         self.revision == im
     }
 
-    fn dump(&self) {
+    pub(crate) fn dump(&self) {
         println!("implementer : {}", self.implementer);
         println!("variant     : {}", self.variant);
         println!("architecture: {}", self.architecture);
-        println!("part_num    : {}", self.part_num);
+        println!("part_num    : {:#0x}", self.part_num);
         println!("revision    : {}", self.revision);
     }
 }
