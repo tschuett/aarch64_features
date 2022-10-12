@@ -6,12 +6,11 @@
 //! [The MIDR for the Neoverse N2](https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register) describes the contents of MIDR_EL1 registern on Arm Neoverse N2 cores.
 //! The gcc [aarch64 cores](https://github.com/gcc-mirror/gcc/blob/master/gcc/config/aarch64/aarch64-cores.def) has a elaborate list of cores and partial MIDR_EL1 definitions.
 
-use crate::midr::Architecture;
 use crate::midr::Implementer;
 use crate::midr::Midr;
 
 #[non_exhaustive]
-#[derive(Debug, Hash, Eq, PartialEq)]
+#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
 /// Core kind
 pub enum Core {
     /// Arm Neoverse N1 core
@@ -39,43 +38,16 @@ impl TryFrom<Midr> for Core {
 
     #[cfg(target_arch = "aarch64")]
     /// try to detect the current core
-    fn try_from2(value: Midr) -> Result<Self, Self::Error> {
-        if is_neoverse_n1(&value) {
-            return Ok(Core::NeoverseN1);
-        } else if is_neoverse_n2(&value) {
-            return Ok(Core::NeoverseN2);
-        } else if is_neoverse_v1(&value) {
-            return Ok(Core::NeoverseV1);
-        } else if is_neoverse_v2(&value) {
-            return Ok(Core::NeoverseV2);
-        } else if is_a64fx(&value) {
-            return Ok(Core::A64FX);
-        } else if is_apple_m1(&value) {
-            return Ok(Core::AppleM1);
-        } else if is_apple_m1_pro(&value) {
-            return Ok(Core::AppleM1Pro);
-        } else if is_apple_m1_max(&value) {
-            return Ok(Core::AppleM1Max);
-        } else if is_ampere_1(&value) {
-            return Ok(Core::Ampere1);
-        }
-
-        Err("Unknown core")
-    }
-
-    #[cfg(target_arch = "aarch64")]
-    /// try to detect the current core
-    fn try_from(value: &Midr) -> Result<Self, Self::Error> {
-        let checkers: Vec<Box<dyn CPUDetector>> =
-            vec![Box::new(NeoverseN1::new()), Box::new(NeoverseN2::new())];
-
-        for check in checkers {
-            if let Ok(cpu_type) = check.get_type(value) {
-                return Ok(cpu_type);
+    fn try_from(value: Midr) -> Result<Self, Self::Error> {
+        for core_description in CORES {
+            if value.check_implementer(core_description.implementer)
+                && core_description.variant.check_match(&value)
+            {
+                return Ok(core_description.core);
             }
         }
 
-        Err("unknown core".to_string())
+        Err("unknown core")
     }
 
     #[cfg(not(target_arch = "aarch64"))]
@@ -83,61 +55,6 @@ impl TryFrom<Midr> for Core {
     fn try_from(_value: Midr) -> Result<Self, Self::Error> {
         Err("Unsupported arch")
     }
-}
-
-fn is_neoverse_n1(midr: &Midr) -> bool {
-    midr.is_arm() // arm
-        && midr.check_variant(0x4)
-        && midr.check_architecture(Architecture::IDRegisters)
-        && midr.check_part_num(ARM_NEOVERSE_N1_PART_NUM) // N1
-        && midr.check_revision(0x0) // r4p0
-}
-
-// https://developer.arm.com/documentation/102099/0000/AArch64-registers/AArch64-identification-registers/MIDR-EL1--Main-ID-Register
-fn is_neoverse_n2(midr: &Midr) -> bool {
-    midr.is_arm() // arm
-        && midr.check_variant(0x0) // r0p0
-        && midr.check_architecture(Architecture::IDRegisters)
-        && midr.check_part_num(ARM_NEOVERSE_N2_PART_NUM) // N2
-        && midr.check_revision(0x0) // r0p0
-}
-
-fn is_neoverse_v1(midr: &Midr) -> bool {
-    midr.is_arm() // arm
-        && midr.check_variant(0x1) // r1p1
-        && midr.check_architecture(Architecture::IDRegisters)
-        && midr.check_part_num(ARM_NEOVERSE_V1_PART_NUM) // V1
-        && midr.check_revision(0x1) // r1p1
-}
-
-fn is_a64fx(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Fujitsu) && midr.check_part_num(0x1)
-}
-
-fn is_apple_m1(midr: &Midr) -> bool {
-    midr.is_apple()
-        && midr.check_part_num_or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)
-}
-
-fn is_apple_m1_pro(midr: &Midr) -> bool {
-    midr.is_apple()
-        && midr.check_part_num_or(
-            APPLE_M1_FIRESTORM_PRO_PART_NUM,
-            APPLE_M1_ICESTORM_PRO_PART_NUM,
-        )
-}
-
-fn is_apple_m1_max(midr: &Midr) -> bool {
-    midr.is_apple()
-        && midr.check_part_num_or(
-            APPLE_M1_FIRESTORM_MAX_PART_NUM,
-            APPLE_M1_ICESTORM_MAX_PART_NUM,
-        )
-}
-
-fn is_ampere_1(midr: &Midr) -> bool {
-    midr.check_implementer(Implementer::Ampere) // ampere
-        && midr.check_part_num(AMPERE_1_PART_NUM) // ampere 1
 }
 
 /// arm/cpuid.h (mobile phone?)
@@ -177,14 +94,14 @@ mod tests {
             .part_num(APPLE_M1_FIRESTORM_PART_NUM)
             .build();
 
-        assert!(is_apple_m1(&midr));
+        //assert!(is_apple_m1(&midr));
 
         let midr = MidrBuilder::new()
             .implementer(Implementer::Apple)
             .part_num(APPLE_M1_ICESTORM_PART_NUM)
             .build();
 
-        assert!(is_apple_m1(&midr));
+        //assert!(is_apple_m1(&midr));
     }
 }
 
@@ -223,10 +140,8 @@ enum VariantMatcher {
 impl VariantMatcher {
     fn check_match(&self, midr: &Midr) -> bool {
         match self {
-            VariantMatcher::One(one) => return midr.check_variant(*one),
-            VariantMatcher::Or(one, two) => {
-                return midr.check_variant(*one) || midr.check_variant(*two)
-            }
+            VariantMatcher::One(one) => midr.check_variant(*one),
+            VariantMatcher::Or(one, two) => midr.check_variant(*one) || midr.check_variant(*two),
         }
     }
 }
@@ -236,7 +151,7 @@ macro_rules! declare_cores {
         ($core:ident, $implementer:ident, $variant:expr),
     )+) => {
         /// My favorite cores
-        use crate::cpu_type::VariantMatcher::One;
+        use crate::cpu_type::VariantMatcher::*;
         use crate::midr::Implementer::*;
         use crate::cpu_type::Core::*;
         const CORES: &[CoreDescription] = &[
@@ -253,17 +168,13 @@ macro_rules! declare_cores {
 
 #[rustfmt::skip]
 declare_cores!(
-    (NeoverseN1, Arm, One(ARM_NEOVERSE_N1_PART_NUM)),
-    (NeoverseN2, Arm, One(ARM_NEOVERSE_N2_PART_NUM)),
-    (NeoverseV1, Arm, One(ARM_NEOVERSE_V1_PART_NUM)),
-    (NeoverseV2, Arm, One(ARM_NEOVERSE_V2_PART_NUM)),
+    (NeoverseN1, Arm,     One(ARM_NEOVERSE_N1_PART_NUM)),
+    (NeoverseN2, Arm,     One(ARM_NEOVERSE_N2_PART_NUM)),
+    (NeoverseV1, Arm,     One(ARM_NEOVERSE_V1_PART_NUM)),
+    (NeoverseV2, Arm,     One(ARM_NEOVERSE_V2_PART_NUM)),
+    (Ampere1,    Ampere,  One(AMPERE_1_PART_NUM)),
+    (AppleM1,    Apple,   Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)),
+    (AppleM1Pro, Apple,   Or(APPLE_M1_FIRESTORM_PRO_PART_NUM, APPLE_M1_ICESTORM_PRO_PART_NUM)),
+    (AppleM1Max, Apple,   Or(APPLE_M1_FIRESTORM_MAX_PART_NUM, APPLE_M1_ICESTORM_MAX_PART_NUM)),
+    (A64FX,      Fujitsu, One(0x1)),
 );
-
-/// retrieve the current core
-pub fn get_core_kind(midr: &Midr) {
-    for core_description in CORES {
-        if midr.check_implementer(core_description.implementer)
-            && core_description.variant.check_match(midr)
-        {}
-    }
-}
