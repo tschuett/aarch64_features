@@ -81,6 +81,8 @@ const ARM_NEOVERSE_V2_PART_NUM: u64 = 0xD4F;
 
 const AMPERE_1_PART_NUM: u64 = 0xac3;
 
+const FUJITSU_A64FX_PART_NUM: u64 = 0x01;
+
 #[cfg(test)]
 mod tests {
 
@@ -176,5 +178,5 @@ declare_cores!(
     (AppleM1,    Apple,   Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)),
     (AppleM1Pro, Apple,   Or(APPLE_M1_FIRESTORM_PRO_PART_NUM, APPLE_M1_ICESTORM_PRO_PART_NUM)),
     (AppleM1Max, Apple,   Or(APPLE_M1_FIRESTORM_MAX_PART_NUM, APPLE_M1_ICESTORM_MAX_PART_NUM)),
-    (A64FX,      Fujitsu, One(0x1)),
+    (A64FX,      Fujitsu, One(FUJITSU_A64FX_PART_NUM)),
 );
