@@ -10,8 +10,8 @@ use crate::midr::Architecture;
 use crate::midr::Implementer;
 use crate::midr::Midr;
 
-#[derive(Debug)]
 #[non_exhaustive]
+#[derive(Debug, Hash, Eq, PartialEq)]
 /// Core kind
 pub enum Core {
     /// Arm Neoverse N1 core
@@ -39,7 +39,7 @@ impl TryFrom<Midr> for Core {
 
     #[cfg(target_arch = "aarch64")]
     /// try to detect the current core
-    fn try_from(value: Midr) -> Result<Self, Self::Error> {
+    fn try_from2(value: Midr) -> Result<Self, Self::Error> {
         if is_neoverse_n1(&value) {
             return Ok(Core::NeoverseN1);
         } else if is_neoverse_n2(&value) {
@@ -61,6 +61,21 @@ impl TryFrom<Midr> for Core {
         }
 
         Err("Unknown core")
+    }
+
+    #[cfg(target_arch = "aarch64")]
+    /// try to detect the current core
+    fn try_from(value: &Midr) -> Result<Self, Self::Error> {
+        let checkers: Vec<Box<dyn CPUDetector>> =
+            vec![Box::new(NeoverseN1::new()), Box::new(NeoverseN2::new())];
+
+        for check in checkers {
+            if let Ok(cpu_type) = check.get_type(value) {
+                return Ok(cpu_type);
+            }
+        }
+
+        Err("unknown core".to_string())
     }
 
     #[cfg(not(target_arch = "aarch64"))]
@@ -93,11 +108,6 @@ fn is_neoverse_v1(midr: &Midr) -> bool {
         && midr.check_architecture(Architecture::IDRegisters)
         && midr.check_part_num(ARM_NEOVERSE_V1_PART_NUM) // V1
         && midr.check_revision(0x1) // r1p1
-}
-
-fn is_neoverse_v2(midr: &Midr) -> bool {
-    midr.is_arm() // arm
-        && midr.check_part_num(ARM_NEOVERSE_V2_PART_NUM) // V2
 }
 
 fn is_a64fx(midr: &Midr) -> bool {
@@ -194,3 +204,66 @@ mod tests {
 
 // 4 Februar
 // https://github.com/apple-oss-distributions/xnu/blob/main/osfmk/arm/cpuid.c
+
+#[allow(unused)]
+#[derive(Eq, PartialEq)]
+struct CoreDescription {
+    core: Core,
+    implementer: Implementer,
+    variant: VariantMatcher,
+}
+
+#[allow(unused)]
+#[derive(Eq, PartialEq)]
+enum VariantMatcher {
+    One(u64),
+    Or(u64, u64),
+}
+
+impl VariantMatcher {
+    fn check_match(&self, midr: &Midr) -> bool {
+        match self {
+            VariantMatcher::One(one) => return midr.check_variant(*one),
+            VariantMatcher::Or(one, two) => {
+                return midr.check_variant(*one) || midr.check_variant(*two)
+            }
+        }
+    }
+}
+
+macro_rules! declare_cores {
+    ($(
+        ($core:ident, $implementer:ident, $variant:expr),
+    )+) => {
+        /// My favorite cores
+        use crate::cpu_type::VariantMatcher::One;
+        use crate::midr::Implementer::*;
+        use crate::cpu_type::Core::*;
+        const CORES: &[CoreDescription] = &[
+            $(
+                CoreDescription{
+                    core: $core,
+                    implementer: $implementer,
+                    variant: $variant,
+                }
+            ),+
+        ];
+    }
+}
+
+#[rustfmt::skip]
+declare_cores!(
+    (NeoverseN1, Arm, One(ARM_NEOVERSE_N1_PART_NUM)),
+    (NeoverseN2, Arm, One(ARM_NEOVERSE_N2_PART_NUM)),
+    (NeoverseV1, Arm, One(ARM_NEOVERSE_V1_PART_NUM)),
+    (NeoverseV2, Arm, One(ARM_NEOVERSE_V2_PART_NUM)),
+);
+
+/// retrieve the current core
+pub fn get_core_kind(midr: &Midr) {
+    for core_description in CORES {
+        if midr.check_implementer(core_description.implementer)
+            && core_description.variant.check_match(midr)
+        {}
+    }
+}

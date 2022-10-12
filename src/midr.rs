@@ -1,7 +1,7 @@
 use std::fmt;
 
 #[non_exhaustive]
-#[derive(Clone, Copy, PartialEq, Debug)]
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
 pub(crate) enum Implementer {
     Arm = 0x41,
     Fujitsu = 0x46,
