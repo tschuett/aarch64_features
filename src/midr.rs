@@ -117,6 +117,29 @@ impl fmt::Display for Architecture {
 }
 
 #[derive(Debug)]
+/// Representation of a target-indepent MIDR_EL1 register
+pub enum MidrEL1 {
+    /// The Midr value is unknown, e.g. x86
+    Unknown,
+    /// The Midr value is known
+    Known(Midr),
+}
+
+impl MidrEL1 {
+    /// Create a new target-indepent Midr
+    pub fn new() -> Self {
+        #[cfg(target_arch = "aarch64")]
+        {
+            return MidrEL1::Known(Midr::new());
+        }
+        #[cfg(not(target_arch = "aarch64"))]
+        {
+            return MidrEL1::Unknown;
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
 /// A MIDR_EL1 register
 pub struct Midr {
     implementer: Implementer,
@@ -128,7 +151,7 @@ pub struct Midr {
 
 impl Midr {
     /// Create a new Midr
-    pub fn new() -> Self {
+    fn new() -> Self {
         #[cfg(target_arch = "aarch64")]
         {
             let mut midr: u64;
@@ -195,6 +218,7 @@ impl Midr {
         self.revision == im
     }
 
+    #[allow(unused)]
     pub(crate) fn dump(&self) {
         println!("implementer : {}", self.implementer);
         println!("variant     : {}", self.variant);

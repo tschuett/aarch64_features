@@ -7,7 +7,7 @@
 //! The gcc [aarch64 cores](https://github.com/gcc-mirror/gcc/blob/master/gcc/config/aarch64/aarch64-cores.def) has a elaborate list of cores and partial MIDR_EL1 definitions.
 
 use crate::midr::Implementer;
-use crate::midr::Midr;
+use crate::midr::MidrEL1;
 
 #[non_exhaustive]
 #[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
@@ -33,27 +33,25 @@ pub enum Core {
     Ampere1,
 }
 
-impl TryFrom<Midr> for Core {
+impl TryFrom<MidrEL1> for Core {
     type Error = &'static str;
 
-    #[cfg(target_arch = "aarch64")]
     /// try to detect the current core
-    fn try_from(value: Midr) -> Result<Self, Self::Error> {
-        for core_description in CORES {
-            if value.check_implementer(core_description.implementer)
-                && core_description.variant.check_match(&value)
-            {
-                return Ok(core_description.core);
+    fn try_from(value: MidrEL1) -> Result<Self, Self::Error> {
+        match value {
+            MidrEL1::Unknown => Err("Unsupported arch"),
+            MidrEL1::Known(ref midr) => {
+                for core_description in CORES {
+                    if midr.check_implementer(core_description.implementer)
+                        && core_description.variant.check_match(&value)
+                    {
+                        return Ok(core_description.core);
+                    }
+                }
+
+                Err("unknown core")
             }
         }
-
-        Err("unknown core")
-    }
-
-    #[cfg(not(target_arch = "aarch64"))]
-    /// try to detect the current core
-    fn try_from(_value: Midr) -> Result<Self, Self::Error> {
-        Err("Unsupported arch")
     }
 }
 
@@ -87,18 +85,22 @@ const FUJITSU_A64FX_PART_NUM: u64 = 0x001;
 mod tests {
 
     use super::*;
-    use crate::midr::MidrBuilder;
+    use crate::midr::{Midr, MidrBuilder};
 
-    fn try_from(value: &Midr) -> Option<Core> {
-        for core_description in CORES {
-            if value.check_implementer(core_description.implementer)
-                && core_description.variant.check_match(&value)
-            {
-                return Some(core_description.core);
+    fn try_from(value: &MidrEL1) -> Option<Core> {
+        match value {
+            MidrEL1::Unknown => None,
+            MidrEL1::Known(midr) => {
+                for core_description in CORES {
+                    if midr.check_implementer(core_description.implementer)
+                        && core_description.variant.check_match(&value)
+                    {
+                        return Some(core_description.core);
+                    }
+                }
+                None
             }
         }
-
-        None
     }
 
     #[test]
@@ -107,13 +109,14 @@ mod tests {
             .implementer(Implementer::Apple)
             .part_num(APPLE_M1_FIRESTORM_PART_NUM)
             .build();
+        let midr_el1 = MidrEL1::Known(midr.clone());
 
         assert!(midr.check_part_num(APPLE_M1_FIRESTORM_PART_NUM));
         assert!(midr.check_implementer(Apple));
 
-        assert!(Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM).check_match(&midr));
+        assert!(Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM).check_match(&midr_el1));
 
-        let core_option = try_from(&midr);
+        let core_option = try_from(&midr_el1);
         assert!(core_option.is_some());
 
         assert!(core_option.unwrap_or(AppleM1Max) == AppleM1);
@@ -123,7 +126,7 @@ mod tests {
             .part_num(APPLE_M1_ICESTORM_PART_NUM)
             .build();
 
-        let core_option = try_from(&midr);
+        let core_option = try_from(&midr_el1);
         assert!(core_option.is_some());
         assert!(core_option.unwrap_or(AppleM1Max) == AppleM1);
 
@@ -148,6 +151,8 @@ mod tests {
 // 4 Februar
 // https://github.com/apple-oss-distributions/xnu/blob/main/osfmk/arm/cpuid.c
 
+// https://github.com/rust-lang/rust/blob/master/src/tools/rustfmt/tests/source/cfg_if/detect/os/aarch64.rs
+
 #[allow(unused)]
 #[derive(Eq, PartialEq)]
 struct CoreDescription {
@@ -164,10 +169,17 @@ enum PartNumMatcher {
 }
 
 impl PartNumMatcher {
-    fn check_match(&self, midr: &Midr) -> bool {
-        match self {
-            PartNumMatcher::One(one) => midr.check_part_num(*one),
-            PartNumMatcher::Or(one, two) => midr.check_part_num(*one) || midr.check_part_num(*two),
+    fn check_match(&self, value: &MidrEL1) -> bool {
+        match value {
+            MidrEL1::Unknown => {
+                return false;
+            }
+            MidrEL1::Known(midr) => match self {
+                PartNumMatcher::One(one) => midr.check_part_num(*one),
+                PartNumMatcher::Or(one, two) => {
+                    midr.check_part_num(*one) || midr.check_part_num(*two)
+                }
+            },
         }
     }
 }
