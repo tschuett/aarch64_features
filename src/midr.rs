@@ -117,7 +117,7 @@ impl fmt::Display for Architecture {
 }
 
 #[derive(Debug)]
-/// Representation of a target-indepent MIDR_EL1 register
+/// Representation of a target-independent MIDR_EL1 register
 pub enum MidrEL1 {
     /// The Midr value is unknown, e.g. x86
     Unknown,
@@ -126,16 +126,22 @@ pub enum MidrEL1 {
 }
 
 impl MidrEL1 {
-    /// Create a new target-indepent Midr
+    /// Create a new target-independent Midr
     pub fn new() -> Self {
         #[cfg(target_arch = "aarch64")]
         {
-            return MidrEL1::Known(Midr::new());
+            MidrEL1::Known(Midr::new())
         }
         #[cfg(not(target_arch = "aarch64"))]
         {
-            return MidrEL1::Unknown;
+            MidrEL1::Unknown
         }
+    }
+}
+
+impl Default for MidrEL1 {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

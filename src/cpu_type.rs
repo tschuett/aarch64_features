@@ -171,9 +171,7 @@ enum PartNumMatcher {
 impl PartNumMatcher {
     fn check_match(&self, value: &MidrEL1) -> bool {
         match value {
-            MidrEL1::Unknown => {
-                return false;
-            }
+            MidrEL1::Unknown => false,
             MidrEL1::Known(midr) => match self {
                 PartNumMatcher::One(one) => midr.check_part_num(*one),
                 PartNumMatcher::Or(one, two) => {
