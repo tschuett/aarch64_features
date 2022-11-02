@@ -9,6 +9,11 @@
     future_incompatible,
     unused_tuple_struct_fields
 )]
+#![deny(
+    clippy::as_conversions,
+    clippy::missing_safety_doc,
+    clippy::undocumented_unsafe_blocks
+)]
 
 //! This crate checks for available features of AArch64 cores. It
 //! strives for completeness instead of focussing on the favorite

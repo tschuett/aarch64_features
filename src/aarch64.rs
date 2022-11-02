@@ -66,3 +66,5 @@ pub(crate) fn read_register(_register: Register) -> u64 {
 }
 
 // FIXME: audit switch statement and asm!s
+
+// __rsr64
