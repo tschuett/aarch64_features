@@ -58,7 +58,7 @@ pub(crate) enum Architecture {
     Armv5T = 0x04,
     Armv5TE = 0x05,
     Armv5TEJ = 0x06,
-    IDRegisters = 0x07,
+    IDRegisters = 0xF,
     Unknown,
 }
 
@@ -78,7 +78,7 @@ impl TryFrom<u64> for Architecture {
             return Ok(Architecture::Armv5TE);
         } else if value == 0x06 {
             return Ok(Architecture::Armv5TEJ);
-        } else if value == 0x07 {
+        } else if value == 0xF {
             return Ok(Architecture::IDRegisters);
         }
         Err("Value greater than 0x07")

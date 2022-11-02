@@ -31,6 +31,12 @@ pub enum Core {
     AppleM1Max,
     /// Ampere 1
     Ampere1,
+    /// Apple A14
+    AppleA14,
+    /// Apple A15
+    AppleA15,
+    /// Apple A16
+    AppleA16,
 }
 
 impl TryFrom<MidrEL1> for Core {
@@ -56,8 +62,8 @@ impl TryFrom<MidrEL1> for Core {
 }
 
 /// arm/cpuid.h (mobile phone?)
-const APPLE_ICESTORM_PART_NUM: u64 = 0x20;
-const APPLE_FIRESTORM_PART_NUM: u64 = 0x21;
+const APPLE_ICESTORM_PART_NUM: u64 = 0x20; // energy-efficient
+const APPLE_FIRESTORM_PART_NUM: u64 = 0x21; // high-performance maybe A14
 
 const APPLE_M1_ICESTORM_PART_NUM: u64 = 0x22;
 const APPLE_M1_FIRESTORM_PART_NUM: u64 = 0x23;
@@ -68,17 +74,17 @@ const APPLE_M1_FIRESTORM_PRO_PART_NUM: u64 = 0x25;
 const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x28;
 const APPLE_M1_FIRESTORM_MAX_PART_NUM: u64 = 0x29;
 
-/// arm/cpuid.h (mobile phone?)
-const APPLE_BLIZZARD_PART_NUM: u64 = 0x30;
-const APPLE_AVALANCHE_PART_NUM: u64 = 0x31;
+/// arm/cpuid.h
+const APPLE_BLIZZARD_PART_NUM: u64 = 0x30; // A15 energy-efficient or M2
+const APPLE_AVALANCHE_PART_NUM: u64 = 0x31; // A15 high-performance or M2
 
 /// arm/cpuid.h
-const APPLE_BLIZZARD_STATEN_PART_NUM: u64 = 0x32;
-const APPLE_AVALANCHE_STATEN_PART_NUM: u64 = 0x33;
+const APPLE_BLIZZARD_STATEN_PART_NUM: u64 = 0x32; // energy-efficient
+const APPLE_AVALANCHE_STATEN_PART_NUM: u64 = 0x33; // high-perofrmance M2 or A15
 
 /// arm/cpuid.h
-const APPLE_SAWTOOTH_PART_NUM: u64 = 0x40;
-const APPLE_EVEREST_PART_NUM: u64 = 0x41;
+const APPLE_SAWTOOTH_PART_NUM: u64 = 0x40; // maybe A16 energy-efficient core
+const APPLE_EVEREST_PART_NUM: u64 = 0x41; // maybe A16 high-performance core
 
 /// arm/cpuid.h
 const APPLE_SAWTOOTH_M11_PART_NUM: u64 = 0x46;
@@ -223,5 +229,8 @@ declare_cores!(
     (AppleM1,    Apple,   Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)),
     (AppleM1Pro, Apple,   Or(APPLE_M1_FIRESTORM_PRO_PART_NUM, APPLE_M1_ICESTORM_PRO_PART_NUM)),
     (AppleM1Max, Apple,   Or(APPLE_M1_FIRESTORM_MAX_PART_NUM, APPLE_M1_ICESTORM_MAX_PART_NUM)),
+    (AppleA14,   Apple,   Or(APPLE_ICESTORM_PART_NUM, APPLE_FIRESTORM_PART_NUM)),
+    (AppleA15,   Apple,   Or(APPLE_BLIZZARD_PART_NUM, APPLE_AVALANCHE_PART_NUM)),
+    (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
     (A64FX,      Fujitsu, One(FUJITSU_A64FX_PART_NUM)),
 );
