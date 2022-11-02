@@ -29,6 +29,8 @@ pub enum Core {
     AppleM1Pro,
     /// Apple M1 Max
     AppleM1Max,
+    /// Apple M2
+    AppleM2,
     /// Ampere 1
     Ampere1,
     /// Apple A14
@@ -80,7 +82,7 @@ const APPLE_AVALANCHE_PART_NUM: u64 = 0x31; // A15 high-performance or M2
 
 /// arm/cpuid.h
 const APPLE_BLIZZARD_STATEN_PART_NUM: u64 = 0x32; // energy-efficient
-const APPLE_AVALANCHE_STATEN_PART_NUM: u64 = 0x33; // high-perofrmance M2 or A15
+const APPLE_AVALANCHE_STATEN_PART_NUM: u64 = 0x33; // high-performance M2 or A15
 
 /// arm/cpuid.h
 const APPLE_SAWTOOTH_PART_NUM: u64 = 0x40; // maybe A16 energy-efficient core
@@ -229,6 +231,7 @@ declare_cores!(
     (AppleM1,    Apple,   Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)),
     (AppleM1Pro, Apple,   Or(APPLE_M1_FIRESTORM_PRO_PART_NUM, APPLE_M1_ICESTORM_PRO_PART_NUM)),
     (AppleM1Max, Apple,   Or(APPLE_M1_FIRESTORM_MAX_PART_NUM, APPLE_M1_ICESTORM_MAX_PART_NUM)),
+    (AppleM2,    Apple,   Or(APPLE_BLIZZARD_STATEN_PART_NUM, APPLE_AVALANCHE_STATEN_PART_NUM)),
     (AppleA14,   Apple,   Or(APPLE_ICESTORM_PART_NUM, APPLE_FIRESTORM_PART_NUM)),
     (AppleA15,   Apple,   Or(APPLE_BLIZZARD_PART_NUM, APPLE_AVALANCHE_PART_NUM)),
     (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
