@@ -81,7 +81,7 @@ impl TryFrom<u64> for Architecture {
         } else if value == 0xF {
             return Ok(Architecture::IDRegisters);
         }
-        Err("Value greater than 0x07")
+        Err("Value greater than 0xF")
     }
 }
 
@@ -196,33 +196,33 @@ impl Midr {
         self.implementer == im
     }
 
-    pub(crate) fn is_arm(&self) -> bool {
-        self.implementer == Implementer::Arm
-    }
-
-    pub(crate) fn is_apple(&self) -> bool {
-        self.implementer == Implementer::Apple
-    }
-
+    //    pub(crate) fn is_arm(&self) -> bool {
+    //        self.implementer == Implementer::Arm
+    //    }
+    //
+    //    pub(crate) fn is_apple(&self) -> bool {
+    //        self.implementer == Implementer::Apple
+    //    }
+    //
     pub(crate) fn check_variant(&self, im: u64) -> bool {
         self.variant == im
     }
-
-    pub(crate) fn check_architecture(&self, arch: Architecture) -> bool {
-        self.architecture == arch
-    }
-
+    //
+    //    pub(crate) fn check_architecture(&self, arch: Architecture) -> bool {
+    //        self.architecture == arch
+    //    }
+    //
     pub(crate) fn check_part_num(&self, part_num: u64) -> bool {
         self.part_num == part_num
     }
-
-    pub(crate) fn check_part_num_or(&self, part_num0: u64, part_num1: u64) -> bool {
-        self.part_num == part_num0 || self.part_num == part_num1
-    }
-
-    pub(crate) fn check_revision(&self, im: u64) -> bool {
-        self.revision == im
-    }
+    //
+    //    pub(crate) fn check_part_num_or(&self, part_num0: u64, part_num1: u64) -> bool {
+    //        self.part_num == part_num0 || self.part_num == part_num1
+    //    }
+    //
+    //    pub(crate) fn check_revision(&self, im: u64) -> bool {
+    //        self.revision == im
+    //    }
 
     #[allow(unused)]
     pub(crate) fn dump(&self) {
