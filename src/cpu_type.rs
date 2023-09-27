@@ -93,6 +93,10 @@ const APPLE_EVEREST_PART_NUM: u64 = 0x41; // maybe A16 high-performance core
 /// arm/cpuid.h
 const APPLE_SAWTOOTH_M11_PART_NUM: u64 = 0x46;
 
+/// arm/cpuid.h
+const APPLE_ECORE_COLL_PART_NUM: u64 = 0x50;
+const APPLE_PCORE_COLL_PART_NUM: u64 = 0x51;
+
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
 const ARM_NEOVERSE_V1_PART_NUM: u64 = 0xD40;
