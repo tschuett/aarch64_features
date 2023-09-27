@@ -65,6 +65,8 @@ impl TryFrom<MidrEL1> for Core {
     }
 }
 
+// https://github.com/llvm/llvm-project/pull/67591/files
+
 /// arm/cpuid.h (mobile phone?)
 const APPLE_ICESTORM_PART_NUM: u64 = 0x20; // energy-efficient
 const APPLE_FIRESTORM_PART_NUM: u64 = 0x21; // high-performance maybe A14
