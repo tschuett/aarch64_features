@@ -247,3 +247,5 @@ declare_cores!(
     (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
     (A64FX,      Fujitsu, One(FUJITSU_A64FX_PART_NUM)),
 );
+
+// https://www.anandtech.com/show/21116/apple-announces-m3-soc-family-m3-m3-pro-and-m3-max-make-their-marks
