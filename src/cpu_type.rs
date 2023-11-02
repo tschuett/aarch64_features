@@ -31,6 +31,10 @@ pub enum Core {
     AppleM1Max,
     /// Apple M2
     AppleM2,
+    /// Apple M2 Pro
+    AppleM2Pro,
+    /// Apple M2 Max
+    AppleM2Max,
     /// Ampere 1
     Ampere1,
     /// Ampere 1A
@@ -94,6 +98,20 @@ const APPLE_EVEREST_PART_NUM: u64 = 0x41; // maybe A16 high-performance core
 
 /// arm/cpuid.h
 const APPLE_SAWTOOTH_M11_PART_NUM: u64 = 0x46;
+
+/// https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/cputype.h
+const APPLE_CPU_PART_M1_ICESTORM: u64 = 0x022;
+const APPLE_CPU_PART_M1_FIRESTORM: u64 = 0x023;
+const APPLE_CPU_PART_M1_ICESTORM_PRO: u64 = 0x024;
+const APPLE_CPU_PART_M1_FIRESTORM_PRO: u64 = 0x025;
+const APPLE_CPU_PART_M1_ICESTORM_MAX: u64 = 0x028;
+const APPLE_CPU_PART_M1_FIRESTORM_MAX: u64 = 0x029;
+const APPLE_CPU_PART_M2_BLIZZARD: u64 = 0x032;
+const APPLE_CPU_PART_M2_AVALANCHE: u64 = 0x033;
+const APPLE_CPU_PART_M2_BLIZZARD_PRO: u64 = 0x034;
+const APPLE_CPU_PART_M2_AVALANCHE_PRO: u64 = 0x035;
+const APPLE_CPU_PART_M2_BLIZZARD_MAX: u64 = 0x038;
+const APPLE_CPU_PART_M2_AVALANCHE_MAX: u64 = 0x039;
 
 /// arm/cpuid.h
 const APPLE_ECORE_COLL_PART_NUM: u64 = 0x50;
@@ -238,10 +256,12 @@ declare_cores!(
     (NeoverseV2, Arm,     One(ARM_NEOVERSE_V2_PART_NUM)),
     (Ampere1,    Ampere,  One(AMPERE_1_PART_NUM)),
     (Ampere1A,   Ampere,  One(AMPERE_1A_PART_NUM)),
-    (AppleM1,    Apple,   Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM)),
-    (AppleM1Pro, Apple,   Or(APPLE_M1_FIRESTORM_PRO_PART_NUM, APPLE_M1_ICESTORM_PRO_PART_NUM)),
-    (AppleM1Max, Apple,   Or(APPLE_M1_FIRESTORM_MAX_PART_NUM, APPLE_M1_ICESTORM_MAX_PART_NUM)),
-    (AppleM2,    Apple,   Or(APPLE_BLIZZARD_STATEN_PART_NUM, APPLE_AVALANCHE_STATEN_PART_NUM)),
+    (AppleM1,    Apple,   Or(APPLE_CPU_PART_M1_ICESTORM, APPLE_CPU_PART_M1_FIRESTORM)),
+    (AppleM1Pro, Apple,   Or(APPLE_CPU_PART_M1_ICESTORM_PRO, APPLE_CPU_PART_M1_FIRESTORM_PRO)),
+    (AppleM1Max, Apple,   Or(APPLE_CPU_PART_M1_ICESTORM_MAX, APPLE_CPU_PART_M1_FIRESTORM_MAX)),
+    (AppleM2,    Apple,   Or(APPLE_CPU_PART_M2_BLIZZARD, APPLE_CPU_PART_M2_AVALANCHE)),
+    (AppleM2Pro, Apple,   Or(APPLE_CPU_PART_M2_BLIZZARD_PRO, APPLE_CPU_PART_M2_AVALANCHE_PRO)),
+    (AppleM2Max, Apple,   Or(APPLE_CPU_PART_M2_BLIZZARD_MAX, APPLE_CPU_PART_M2_AVALANCHE_MAX)),
     (AppleA14,   Apple,   Or(APPLE_ICESTORM_PART_NUM, APPLE_FIRESTORM_PART_NUM)),
     (AppleA15,   Apple,   Or(APPLE_BLIZZARD_PART_NUM, APPLE_AVALANCHE_PART_NUM)),
     (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
