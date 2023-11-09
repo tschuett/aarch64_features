@@ -1,6 +1,6 @@
 use crate::Feature;
 
-/// These are the features exported by the kernel to userspace, see [kernel](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst).
+/// These are the features exported by the kernel to userspace, see [kernel](https://github.com/torvalds/linux/blob/master/Documentation/arch/arm64/cpu-feature-registers.rst).
 /// The list was last updated at 16.8.2022 (non-exhaustive).
 pub(crate) const EXPORTED_FEATURES: &[Feature] = &[
     // ID_AA64ISAR0_EL1

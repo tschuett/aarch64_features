@@ -34,7 +34,7 @@ supported configurations:
 
 The Linux kernel only exposes a subset of the features to userspace,
 see [feature
-registers](https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst). The set
+registers](https://github.com/torvalds/linux/blob/master/Documentation/arch/arm64/cpu-feature-registers.rst). The set
 changes over time and thus the reported features of this crate can
 change between versions.
 
