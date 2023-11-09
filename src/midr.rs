@@ -7,7 +7,6 @@ pub(crate) enum Implementer {
     Fujitsu = 0x46,
     Apple = 0x61,
     Ampere = 0xc0,
-    Nvidia = 0x41,
     Unknown,
 }
 
@@ -23,8 +22,6 @@ impl TryFrom<u64> for Implementer {
             Ok(Implementer::Apple)
         } else if value == 0xc0 {
             Ok(Implementer::Ampere)
-        } else if value == 0x41 {
-            Ok(Implementer::Nvidia)
         } else {
             Err("unknown implementer")
         }
@@ -45,9 +42,6 @@ impl fmt::Display for Implementer {
             }
             Implementer::Ampere => {
                 write!(f, "Ampere")
-            }
-            Implementer::Nvidia => {
-                write!(f, "Nvidia")
             }
             Implementer::Unknown => {
                 write!(f, "Unknown")
