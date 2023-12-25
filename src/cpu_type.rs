@@ -75,30 +75,11 @@ impl TryFrom<MidrEL1> for Core {
 const APPLE_ICESTORM_PART_NUM: u64 = 0x20; // energy-efficient
 const APPLE_FIRESTORM_PART_NUM: u64 = 0x21; // high-performance maybe A14
 
-const APPLE_M1_ICESTORM_PART_NUM: u64 = 0x22;
-const APPLE_M1_FIRESTORM_PART_NUM: u64 = 0x23;
-
-const APPLE_M1_ICESTORM_PRO_PART_NUM: u64 = 0x24;
-const APPLE_M1_FIRESTORM_PRO_PART_NUM: u64 = 0x25;
-
-const APPLE_M1_ICESTORM_MAX_PART_NUM: u64 = 0x28;
-const APPLE_M1_FIRESTORM_MAX_PART_NUM: u64 = 0x29;
-
 /// arm/cpuid.h
 const APPLE_BLIZZARD_PART_NUM: u64 = 0x30; // A15 energy-efficient or M2
 const APPLE_AVALANCHE_PART_NUM: u64 = 0x31; // A15 high-performance or M2
 
 /// arm/cpuid.h
-const APPLE_BLIZZARD_STATEN_PART_NUM: u64 = 0x32; // energy-efficient
-const APPLE_AVALANCHE_STATEN_PART_NUM: u64 = 0x33; // high-performance M2 or A15
-
-/// arm/cpuid.h
-const APPLE_SAWTOOTH_PART_NUM: u64 = 0x40; // maybe A16 energy-efficient core
-const APPLE_EVEREST_PART_NUM: u64 = 0x41; // maybe A16 high-performance core
-
-/// arm/cpuid.h
-const APPLE_SAWTOOTH_M11_PART_NUM: u64 = 0x46;
-
 /// https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/cputype.h
 const APPLE_CPU_PART_M1_ICESTORM: u64 = 0x022;
 const APPLE_CPU_PART_M1_FIRESTORM: u64 = 0x023;
@@ -114,7 +95,33 @@ const APPLE_CPU_PART_M2_BLIZZARD_MAX: u64 = 0x038;
 const APPLE_CPU_PART_M2_AVALANCHE_MAX: u64 = 0x039;
 
 /// arm/cpuid.h
+
+/* H15 e-Core */
+const APPLE_SAWTOOTH_PART_NUM: u64 = 0x40; // maybe A16 energy-efficient core
+                                           /* H15 p-Core */
+const APPLE_EVEREST_PART_NUM: u64 = 0x41; // maybe A16 high-performance core
+
+/* H15 Ibiza e-Core */
+const APPLE_ECORE_IBIZA_PART_NUM: u64 = 0x42;
+/* H15 Ibiza p-Core */
+const APPLE_CPU_PART_PCORE_IBIZA_PART_NUM: u64 = 0x43;
+
+/* H15 Lobos e-Core. */
+const APPLE_ECORE_LOBOS_PART_NUM: u64 = 0x44;
+/* H15 Lobos p-Core. */
+const APPLE_PCORE_LOBOS_PART_NUM: u64 = 0x45;
+
+/* M11 e-Core */
+const APPLE_SAWTOOTH_M11_PART_NUM: u64 = 0x46;
+
+/* H15 Palma e-Core. */
+const APPLE_ECORE_PALMA_PART_NUM: u64 = 0x48;
+/* H15 Palma p-Core. */
+const APPLE_PCORE_PALMA_PART_NUM: u64 = 0x49;
+
+/* H15 Coll e-Core. */
 const APPLE_ECORE_COLL_PART_NUM: u64 = 0x50;
+/* H15 Coll p-Core. */
 const APPLE_PCORE_COLL_PART_NUM: u64 = 0x51;
 
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
