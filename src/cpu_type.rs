@@ -101,6 +101,8 @@ const APPLE_SAWTOOTH_PART_NUM: u64 = 0x40; // maybe A16 energy-efficient core
                                            /* H15 p-Core */
 const APPLE_EVEREST_PART_NUM: u64 = 0x41; // maybe A16 high-performance core
 
+// ibiza, lobos, and palma are M3s
+
 /* H15 Ibiza e-Core */
 const APPLE_ECORE_IBIZA_PART_NUM: u64 = 0x42;
 /* H15 Ibiza p-Core */
