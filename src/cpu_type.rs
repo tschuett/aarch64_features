@@ -35,6 +35,12 @@ pub enum Core {
     AppleM2Pro,
     /// Apple M2 Max
     AppleM2Max,
+    /// Apple M3
+    AppleM3,
+    /// Apple M3 Pro
+    AppleM3Pro,
+    /// Apple M3 Max
+    AppleM3Max,
     /// Ampere 1
     Ampere1,
     /// Ampere 1A
@@ -106,7 +112,7 @@ const APPLE_EVEREST_PART_NUM: u64 = 0x41; // maybe A16 high-performance core
 /* H15 Ibiza e-Core */
 const APPLE_ECORE_IBIZA_PART_NUM: u64 = 0x42;
 /* H15 Ibiza p-Core */
-const APPLE_CPU_PART_PCORE_IBIZA_PART_NUM: u64 = 0x43;
+const APPLE_PCORE_IBIZA_PART_NUM: u64 = 0x43;
 
 /* H15 Lobos e-Core. */
 const APPLE_ECORE_LOBOS_PART_NUM: u64 = 0x44;
@@ -122,8 +128,8 @@ const APPLE_ECORE_PALMA_PART_NUM: u64 = 0x48;
 const APPLE_PCORE_PALMA_PART_NUM: u64 = 0x49;
 
 /* H15 Coll e-Core. */
-const APPLE_ECORE_COLL_PART_NUM: u64 = 0x50;
-/* H15 Coll p-Core. */
+const APPLE_ECORE_COLL_PART_NUM: u64 = 0x50; // maybe A17
+                                             /* H15 Coll p-Core. */
 const APPLE_PCORE_COLL_PART_NUM: u64 = 0x51;
 
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
@@ -271,6 +277,9 @@ declare_cores!(
     (AppleM2,    Apple,   Or(APPLE_CPU_PART_M2_BLIZZARD, APPLE_CPU_PART_M2_AVALANCHE)),
     (AppleM2Pro, Apple,   Or(APPLE_CPU_PART_M2_BLIZZARD_PRO, APPLE_CPU_PART_M2_AVALANCHE_PRO)),
     (AppleM2Max, Apple,   Or(APPLE_CPU_PART_M2_BLIZZARD_MAX, APPLE_CPU_PART_M2_AVALANCHE_MAX)),
+    (AppleM3,    Apple,   Or(APPLE_ECORE_IBIZA_PART_NUM, APPLE_PCORE_IBIZA_PART_NUM)),
+    (AppleM3Pro, Apple,   Or(APPLE_ECORE_LOBOS_PART_NUM, APPLE_PCORE_LOBOS_PART_NUM)),
+    (AppleM3Max, Apple,   Or(APPLE_ECORE_PALMA_PART_NUM, APPLE_PCORE_PALMA_PART_NUM)),
     (AppleA14,   Apple,   Or(APPLE_ICESTORM_PART_NUM, APPLE_FIRESTORM_PART_NUM)),
     (AppleA15,   Apple,   Or(APPLE_BLIZZARD_PART_NUM, APPLE_AVALANCHE_PART_NUM)),
     (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
