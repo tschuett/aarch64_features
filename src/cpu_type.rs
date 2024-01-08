@@ -45,6 +45,8 @@ pub enum Core {
     Ampere1,
     /// Ampere 1A
     Ampere1A,
+    /// Ampere 1B
+    Ampere1B,
     /// Apple A14
     AppleA14,
     /// Apple A15
@@ -139,6 +141,7 @@ const ARM_NEOVERSE_V2_PART_NUM: u64 = 0xD4F;
 
 const AMPERE_1_PART_NUM: u64 = 0xac3;
 const AMPERE_1A_PART_NUM: u64 = 0xac4;
+const AMPERE_1B_PART_NUM: u64 = 0xac5;
 
 const FUJITSU_A64FX_PART_NUM: u64 = 0x001;
 
@@ -271,6 +274,7 @@ declare_cores!(
     (NeoverseV2, Arm,     One(ARM_NEOVERSE_V2_PART_NUM)),
     (Ampere1,    Ampere,  One(AMPERE_1_PART_NUM)),
     (Ampere1A,   Ampere,  One(AMPERE_1A_PART_NUM)),
+    (Ampere1B,   Ampere,  One(AMPERE_1B_PART_NUM)),
     (AppleM1,    Apple,   Or(APPLE_CPU_PART_M1_ICESTORM, APPLE_CPU_PART_M1_FIRESTORM)),
     (AppleM1Pro, Apple,   Or(APPLE_CPU_PART_M1_ICESTORM_PRO, APPLE_CPU_PART_M1_FIRESTORM_PRO)),
     (AppleM1Max, Apple,   Or(APPLE_CPU_PART_M1_ICESTORM_MAX, APPLE_CPU_PART_M1_FIRESTORM_MAX)),
