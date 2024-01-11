@@ -7,6 +7,7 @@ pub(crate) enum Implementer {
     Fujitsu = 0x46,
     Apple = 0x61,
     Ampere = 0xc0,
+    Microsoft = 0x6d,
     Unknown,
 }
 

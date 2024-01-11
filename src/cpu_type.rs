@@ -53,6 +53,8 @@ pub enum Core {
     AppleA15,
     /// Apple A16
     AppleA16,
+    /// Microsoft Azure Cobalt 100 (custom N2)
+    MicrosoftAzureCobalt100,
 }
 
 impl TryFrom<MidrEL1> for Core {
@@ -144,6 +146,8 @@ const AMPERE_1A_PART_NUM: u64 = 0xac4;
 const AMPERE_1B_PART_NUM: u64 = 0xac5;
 
 const FUJITSU_A64FX_PART_NUM: u64 = 0x001;
+
+const MICROSOFT_AZURE_COBALT100_PART_NUM: u64 = 0xd49;
 
 #[cfg(test)]
 mod tests {
@@ -288,8 +292,11 @@ declare_cores!(
     (AppleA15,   Apple,   Or(APPLE_BLIZZARD_PART_NUM, APPLE_AVALANCHE_PART_NUM)),
     (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
     (A64FX,      Fujitsu, One(FUJITSU_A64FX_PART_NUM)),
+    (MicrosoftAzureCobalt100, Microsoft, One(MICROSOFT_AZURE_COBALT100_PART_NUM)),
 );
 
 // https://www.anandtech.com/show/21116/apple-announces-m3-soc-family-m3-m3-pro-and-m3-max-make-their-marks
 
 // Grace: https://github.com/openucx/ucx/pull/9479/files
+
+// https://github.com/llvm/llvm-project/pull/77793
