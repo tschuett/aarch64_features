@@ -13,7 +13,7 @@ exclude = ["/.gitignore", "/.github/workflows/rust.yml", "/src/main.rs", "/Cargo
 
 [dependencies]
 strum = "0.24.1"
-strum_macros = "0.25.2"
+strum_macros = "0.26.2"
 
 [target.'cfg(target_arch = "aarch64")'.dependencies]
 libc = "0.2.132"  # getauxval on Linux
