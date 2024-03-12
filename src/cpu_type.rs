@@ -13,6 +13,8 @@ use crate::midr::MidrEL1;
 #[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
 /// Core kind
 pub enum Core {
+    /// Arm Neoverse E1 core
+    NeoverseE1,
     /// Arm Neoverse N1 core
     NeoverseN1,
     /// Arm Neoverse N2 core
@@ -136,6 +138,7 @@ const APPLE_ECORE_COLL_PART_NUM: u64 = 0x50; // maybe A17
                                              /* H15 Coll p-Core. */
 const APPLE_PCORE_COLL_PART_NUM: u64 = 0x51;
 
+const ARM_NEOVERSE_E1_PART_NUM: u64 = 0xD4A;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
 const ARM_NEOVERSE_V1_PART_NUM: u64 = 0xD40;
@@ -272,6 +275,7 @@ macro_rules! declare_cores {
 
 #[rustfmt::skip]
 declare_cores!(
+    (NeoverseE1, Arm,     One(ARM_NEOVERSE_E1_PART_NUM)),
     (NeoverseN1, Arm,     One(ARM_NEOVERSE_N1_PART_NUM)),
     (NeoverseN2, Arm,     One(ARM_NEOVERSE_N2_PART_NUM)),
     (NeoverseV1, Arm,     One(ARM_NEOVERSE_V1_PART_NUM)),

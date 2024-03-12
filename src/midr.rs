@@ -44,6 +44,9 @@ impl fmt::Display for Implementer {
             Implementer::Ampere => {
                 write!(f, "Ampere")
             }
+            Implementer::Microsoft => {
+                write!(f, "Microsoft")
+            }
             Implementer::Unknown => {
                 write!(f, "Unknown")
             }
