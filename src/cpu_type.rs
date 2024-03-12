@@ -19,10 +19,14 @@ pub enum Core {
     NeoverseN1,
     /// Arm Neoverse N2 core
     NeoverseN2,
+    /// Arm Neoverse N3 core
+    NeoverseN3,
     /// Arm Neoverse V1 core
     NeoverseV1,
     /// Arm Neoverse V2 core
     NeoverseV2,
+    /// Arm Neoverse V3 core
+    NeoverseV3,
     /// Fujitsu A64FX
     A64FX,
     /// Apple M1
@@ -141,8 +145,10 @@ const APPLE_PCORE_COLL_PART_NUM: u64 = 0x51;
 const ARM_NEOVERSE_E1_PART_NUM: u64 = 0xD4A;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
+const ARM_NEOVERSE_N3_PART_NUM: u64 = 0xD8E;
 const ARM_NEOVERSE_V1_PART_NUM: u64 = 0xD40;
 const ARM_NEOVERSE_V2_PART_NUM: u64 = 0xD4F;
+const ARM_NEOVERSE_V3_PART_NUM: u64 = 0xD84;
 
 const AMPERE_1_PART_NUM: u64 = 0xac3;
 const AMPERE_1A_PART_NUM: u64 = 0xac4;
@@ -178,14 +184,14 @@ mod tests {
     fn test_apple_m1() {
         let midr = MidrBuilder::new()
             .implementer(Implementer::Apple)
-            .part_num(APPLE_M1_FIRESTORM_PART_NUM)
+            .part_num(APPLE_FIRESTORM_PART_NUM)
             .build();
         let midr_el1 = MidrEL1::Known(midr.clone());
 
-        assert!(midr.check_part_num(APPLE_M1_FIRESTORM_PART_NUM));
+        assert!(midr.check_part_num(APPLE_FIRESTORM_PART_NUM));
         assert!(midr.check_implementer(Apple));
 
-        assert!(Or(APPLE_M1_FIRESTORM_PART_NUM, APPLE_M1_ICESTORM_PART_NUM).check_match(&midr_el1));
+        assert!(Or(APPLE_FIRESTORM_PART_NUM, APPLE_CPU_PART_M1_ICESTORM).check_match(&midr_el1));
 
         let core_option = try_from(&midr_el1);
         assert!(core_option.is_some());
@@ -194,7 +200,7 @@ mod tests {
 
         let midr = MidrBuilder::new()
             .implementer(Implementer::Apple)
-            .part_num(APPLE_M1_ICESTORM_PART_NUM)
+            .part_num(APPLE_CPU_PART_M1_ICESTORM)
             .build();
 
         let core_option = try_from(&midr_el1);
@@ -278,8 +284,10 @@ declare_cores!(
     (NeoverseE1, Arm,     One(ARM_NEOVERSE_E1_PART_NUM)),
     (NeoverseN1, Arm,     One(ARM_NEOVERSE_N1_PART_NUM)),
     (NeoverseN2, Arm,     One(ARM_NEOVERSE_N2_PART_NUM)),
+    (NeoverseN3, Arm,     One(ARM_NEOVERSE_N3_PART_NUM)),
     (NeoverseV1, Arm,     One(ARM_NEOVERSE_V1_PART_NUM)),
     (NeoverseV2, Arm,     One(ARM_NEOVERSE_V2_PART_NUM)),
+    (NeoverseV3, Arm,     One(ARM_NEOVERSE_V3_PART_NUM)),
     (Ampere1,    Ampere,  One(AMPERE_1_PART_NUM)),
     (Ampere1A,   Ampere,  One(AMPERE_1A_PART_NUM)),
     (Ampere1B,   Ampere,  One(AMPERE_1B_PART_NUM)),
