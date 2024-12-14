@@ -572,8 +572,6 @@ pub enum Feature {
     FEAT_ITE,
     /// Load-Acquire RCpc instructions version 3
     FEAT_LRCPC3,
-    /// 128-bit Atomics
-    FEAT_LSE128,
     /// 56-bit VA
     FEAT_LVA3,
     /// Memory Encryption Contexts
@@ -666,8 +664,6 @@ pub enum Feature {
     FEAT_E2HO,
     /// Delegated SError exception injection
     FEAT_E3DSE,
-    /// Floating-point maximun and minimum absolute value instructions
-    FEAT_FAMINMAX,
     /// Fine-Grained Write Trap EL3,
     FEAT_FGWTE3,
     /// FP8 convert instructions
@@ -684,8 +680,6 @@ pub enum Feature {
     FEAT_HACDBS,
     /// Hardware Dirty state tracking Structure
     FEAT_HDBSS,
-    /// Lookup table instructions with 2-bit and 4-bit indices
-    FEAT_LUT,
     /// Pointer authentication instructions that allow signing of LR using SP and PC as diversificers
     FEAT_PAuth_LR,
     /// Performance Monitors extensions for SME,
@@ -720,6 +714,24 @@ pub enum Feature {
     FEAT_STEP2,
     /// TLBI VMALL for Dirty state
     FEAT_TLBIW,
+
+    // Armv9.4
+    /// 128-bit Atomics
+    FEAT_LSE128,
+
+    // Armv9.5
+    /// Lookup table instructions with 2-bit and 4-bit indices
+    FEAT_LUT,
+    /// Floating-point maximum and minimum absolute value instructions
+    FEAT_FAMINMAX,
+
+    // Armv9.6
+    /// Compare and Branch instructions
+    FEAT_CMPBR,
+    /// Large System Float Extension
+    FEAT_LSFE,
+    /// Enhanced nested virtualization support
+    FEAT_NV2p1,
 }
 
 /// test for all aarch64 features
@@ -828,6 +840,8 @@ enum ARMVersion {
     Armv9_2,
     Armv9_3,
     Armv9_4,
+    Armv9_5,
+    Armv9_6,
 }
 
 #[cfg(test)]

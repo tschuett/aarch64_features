@@ -47,6 +47,8 @@ pub enum Core {
     AppleM3Pro,
     /// Apple M3 Max
     AppleM3Max,
+    /// Apple M4
+    AppleM4,
     /// Ampere 1
     Ampere1,
     /// Ampere 1A
@@ -141,6 +143,12 @@ const APPLE_PCORE_PALMA_PART_NUM: u64 = 0x49;
 const APPLE_ECORE_COLL_PART_NUM: u64 = 0x50; // maybe A17
                                              /* H15 Coll p-Core. */
 const APPLE_PCORE_COLL_PART_NUM: u64 = 0x51;
+
+/* H16G Donan e-Core. */
+const APPLE_ECORE_DONAN_PART_NUM: u64 = 0x52; // M4 small
+
+/* H16H Donan p-Core. */
+const APPLE_PCORE_DONAN_PART_NUM: u64 = 0x53;
 
 const ARM_NEOVERSE_E1_PART_NUM: u64 = 0xD4A;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
@@ -300,6 +308,7 @@ declare_cores!(
     (AppleM3,    Apple,   Or(APPLE_ECORE_IBIZA_PART_NUM, APPLE_PCORE_IBIZA_PART_NUM)),
     (AppleM3Pro, Apple,   Or(APPLE_ECORE_LOBOS_PART_NUM, APPLE_PCORE_LOBOS_PART_NUM)),
     (AppleM3Max, Apple,   Or(APPLE_ECORE_PALMA_PART_NUM, APPLE_PCORE_PALMA_PART_NUM)),
+    (AppleM4,    Apple,   Or(APPLE_ECORE_DONAN_PART_NUM, APPLE_PCORE_DONAN_PART_NUM)),
     (AppleA14,   Apple,   Or(APPLE_ICESTORM_PART_NUM, APPLE_FIRESTORM_PART_NUM)),
     (AppleA15,   Apple,   Or(APPLE_BLIZZARD_PART_NUM, APPLE_AVALANCHE_PART_NUM)),
     (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
