@@ -810,6 +810,7 @@ pub mod midr;
 mod aarch64;
 mod features_list;
 mod registers_info;
+mod sve_sme;
 
 /// The list of features that are exported by the kernel to userspace.
 mod linux_exported_features;

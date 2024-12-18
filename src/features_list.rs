@@ -304,6 +304,8 @@ declare_features!(
     // Armv9.6
     (FEAT_CMPBR,           Armv9_6,  ID_AA64ISAR2_EL1,  RegisterMatch(55..=25, Value(0b0010)),       Fill,                                      Branch,     "Compare and Branch instructions"),
     (FEAT_LSFE,           Armv9_6,  ID_AA64ISAR3_EL1,  RegisterMatch(19..=16, Value(0b0001)),       Fill,                                      Atomics,     "Large System Float Extension"),
+    (FEAT_FPRCVT,          Armv9_6,  ID_AA64ISAR3_EL1,  RegisterMatch(31..=28, Value(0b0001)),       Fill,                                      Float,     "Floating-Point to/from Integer in Scalar FP register"),
+    (FEAT_SME_TMOP,          Armv9_6,  ID_AA64SMFR0_EL1,  RegisterMatch(16..=16, Value(01)),       Fill,                                      Float,     "Structured sparsity outer product instructions"),
 
 );
 
