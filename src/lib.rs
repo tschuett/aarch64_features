@@ -99,6 +99,8 @@
 //! - [x] Armv9.2-A
 //! - [x] Armv9.3-A
 //! - [ ] Armv9.4-A
+//! - [ ] Armv9.5-A
+//! - [ ] Armv9.6-A
 //!
 //! # Usage
 //! This crate is [on crates.io](https://crates.io/crates/aarch64_features) and can be
@@ -486,6 +488,16 @@ pub enum Feature {
     FEAT_Debugv8p8,
 
     // Armv8.8
+    /// Reliability, Availability, and Serviceability Extension
+    FEAT_RAS,
+    /// Statistical Profiling Extension
+    FEAT_SPE,
+
+    // Armv8.9
+    /// Common Short Sequence Compression instructions
+    FEAT_CSSC,
+    /// Load-Acquire RCpc instructions version 3
+    FEAT_LRCPC3,
 
     // Armv9.0
     /// Scalable Vector Extension version 2
@@ -528,13 +540,42 @@ pub enum Feature {
     FEAT_SME_I16I64,
 
     // Armv9.3
+    /// Scalable Matrix Extensions version 2
+    FEAT_SME2,
     /// Branch Record Buffer Extension
     FEAT_BRBEv1p1,
 
-    /// Reliability, Availability, and Serviceability Extension
-    FEAT_RAS,
-    /// Statistical Profiling Extension
-    FEAT_SPE,
+    // Armv9.4
+    /// 128-bit Atomics
+    FEAT_LSE128,
+    /// Scalable Matrix Extension version 2.1
+    FEAT_SME2p1,
+    /// Scalable Vector Extensions version 2.1
+    FEAT_SVE2p1,
+
+    // Armv9.5
+    /// Lookup table instructions with 2-bit and 4-bit indices
+    FEAT_LUT,
+    /// Floating-point maximum and minimum absolute value instructions
+    FEAT_FAMINMAX,
+    /// Statisical Profiling extensions for SME
+    FEAT_SPE_SME,
+
+    // Armv9.6
+    /// Compare and Branch instructions
+    FEAT_CMPBR,
+    /// Large System Float Extension
+    FEAT_LSFE,
+    /// Enhanced nested virtualization support
+    FEAT_NV2p1,
+    /// Scalable Matrix Extension version 2.2
+    FEAT_SME2p2,
+    ///Floating-Point to/from Integer in Scalar FP register
+    FEAT_FPRCVT,
+    /// Structured sparsity outer product instructions
+    FEAT_SME_TMOP,
+    /// Scalable Vector Extensions version 2.2
+    FEAT_SVE2p2,
 
     /// Advanced SIMD Extension
     FEAT_AdvSIMD,
@@ -552,8 +593,6 @@ pub enum Feature {
     FEAT_B16B16,
     /// A new instruction CLRBHB is added in HINT space
     FEAT_CLRBHB,
-    /// Common Short Sequence Compression scalar integer instructions
-    FEAT_CSSC,
     /// New identification mechanism for Branch History information
     FEAT_CSV2_3,
     /// 128-bit Translation Tables, 56 bit PA
@@ -570,8 +609,6 @@ pub enum Feature {
     FEAT_HAFT,
     /// Instrumentation trace extension
     FEAT_ITE,
-    /// Load-Acquire RCpc instructions version 3
-    FEAT_LRCPC3,
     /// 56-bit VA
     FEAT_LVA3,
     /// Memory Encryption Contexts
@@ -626,10 +663,6 @@ pub enum Feature {
     FEAT_SEBEP,
     /// Non-widening half-precision FP16 to FP16 arithmetic for SME2.1
     FEAT_SME_F16F16,
-    /// Scalable Matrix Extension versions SME2
-    FEAT_SME2,
-    /// Scalable Matrix Extension versions SME2.1
-    FEAT_SME2p1,
     //    /// Adds new Clear Other Speculative Predictions instruction
     //    FEAT_SPECRES,
     /// System PMU
@@ -638,8 +671,6 @@ pub enum Feature {
     FEAT_SPEv1p4,
     /// SPE filtering by data source
     FEAT_SPE_FDS,
-    /// Scalable Vector Extension version SVE2.1
-    FEAT_SVE2p1,
     /// 128-bit System instructions
     FEAT_SYSINSTR128,
     /// 128-bit System registers
@@ -700,8 +731,6 @@ pub enum Feature {
     FEAT_SPE_EFT,
     /// Statistical Profiling floating-point flag extension
     FEAT_SPE_FPF,
-    /// Statistical Profiling for SME
-    FEAT_SPE_SME,
     /// Sytem Performance Monitors Extension version 2
     //    FEAT_SPMU,
     /// SVE2 FP8 4-way dot product to single-precions instructions in Streaming SVE mode
@@ -714,24 +743,6 @@ pub enum Feature {
     FEAT_STEP2,
     /// TLBI VMALL for Dirty state
     FEAT_TLBIW,
-
-    // Armv9.4
-    /// 128-bit Atomics
-    FEAT_LSE128,
-
-    // Armv9.5
-    /// Lookup table instructions with 2-bit and 4-bit indices
-    FEAT_LUT,
-    /// Floating-point maximum and minimum absolute value instructions
-    FEAT_FAMINMAX,
-
-    // Armv9.6
-    /// Compare and Branch instructions
-    FEAT_CMPBR,
-    /// Large System Float Extension
-    FEAT_LSFE,
-    /// Enhanced nested virtualization support
-    FEAT_NV2p1,
 }
 
 /// test for all aarch64 features
@@ -807,6 +818,7 @@ mod linux_exported_features;
 #[derive(Hash, Eq, PartialEq)]
 enum Category {
     Atomics,
+    Branch,
     Float,
     Caches,
     Crypto,

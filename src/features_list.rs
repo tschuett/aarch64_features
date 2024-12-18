@@ -300,6 +300,11 @@ declare_features!(
     (FEAT_SVE,           Armv8_2,  ID_AA64PFR0_EL1,  RegisterMatch(32..=35, Value(0b0001)),       Fill,                                      Float,     "Scalable Vector Extension"),
     (FEAT_CP15SDISABLE2, Armv8_0,  NoRegister     ,  Fill                                 ,       Fill,                                      Unknown,   "CP15SDISABLE2"),
     (FEAT_PCSRv8,        Armv8_0,  EDDEVID        ,  RegisterMatch(0..=3,   Value(0b0011)),       Fill,                                      Unknown,   "PC Sample-based Profiling Extension"),
+
+    // Armv9.6
+    (FEAT_CMPBR,           Armv9_6,  ID_AA64ISAR2_EL1,  RegisterMatch(55..=25, Value(0b0010)),       Fill,                                      Branch,     "Compare and Branch instructions"),
+    (FEAT_LSFE,           Armv9_6,  ID_AA64ISAR3_EL1,  RegisterMatch(19..=16, Value(0b0001)),       Fill,                                      Atomics,     "Large System Float Extension"),
+
 );
 
 // FIXME: missing CRC32 [19-16]
