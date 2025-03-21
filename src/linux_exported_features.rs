@@ -24,5 +24,11 @@ pub(crate) const EXPORTED_FEATURES: &[Feature] = &[
     Feature::FEAT_AdvSIMD, // AdvSIMD
     // ID_AA64PFR1_EL1
     Feature::FEAT_MTE, // MTE
-                       // MIDR_EL1
+    Feature::FEAT_SME,
+    // MIDR_EL1
+    // ID_AA64ISAR1_EL1
+    Feature::FEAT_LRCPC,
+    // ID_AA64ISAR2_EL1
+    Feature::FEAT_CSSC,
+    Feature::FEAT_MOPS,
 ];

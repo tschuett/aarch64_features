@@ -41,7 +41,7 @@ pub(crate) fn is_exposed_to_userspace(feat: Feature) -> bool {
 
 // https://github.com/torvalds/linux/blob/master/Documentation/arm64/elf_hwcaps.rst
 
-// https://github.com/torvalds/linux/blob/master/Documentation/arm64/cpu-feature-registers.rst
+// https://github.com/torvalds/linux/blob/master/Documentation/arch/arm64/cpu-feature-registers.rst
 
 // https://github.com/torvalds/linux/blob/master/Documentation/arm64/sve.rst
 

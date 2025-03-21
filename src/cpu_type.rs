@@ -29,6 +29,8 @@ pub enum Core {
     NeoverseV3,
     /// Fujitsu A64FX
     A64FX,
+    /// FUJITSU
+    MONAKA,
     /// Apple M1
     AppleM1,
     /// Apple M1 Pro
@@ -49,6 +51,8 @@ pub enum Core {
     AppleM3Max,
     /// Apple M4
     AppleM4,
+    /// Apple M4 Max
+    AppleM4Max,
     /// Ampere 1
     Ampere1,
     /// Ampere 1A
@@ -61,8 +65,14 @@ pub enum Core {
     AppleA15,
     /// Apple A16
     AppleA16,
+    /// Apple A18
+    AppleA18,
+    /// Apple A18 Pro
+    AppleA18Pro,
     /// Microsoft Azure Cobalt 100 (custom N2)
     MicrosoftAzureCobalt100,
+    /// Nvidia Olympus
+    NvidiaOlympus,
 }
 
 impl TryFrom<MidrEL1> for Core {
@@ -150,6 +160,30 @@ const APPLE_ECORE_DONAN_PART_NUM: u64 = 0x52; // M4 small
 /* H16H Donan p-Core. */
 const APPLE_PCORE_DONAN_PART_NUM: u64 = 0x53;
 
+/* H17P Tahiti e-Core. */
+const APPLE_ECORE_TAHITI_PART_NUM: u64 = 0x60; // A18 Pro
+
+/* H17P Tahiti p-Core. */
+const APPLE_PCORE_TAHITI_PART_NUM: u64 = 0x61; // A18 Pro
+
+/* H17A Tupai e-Core. */
+const APPLE_ECORE_TUPAI_PART_NUM: u64 = 0x6a; // A18
+
+/* H17A Tupai p-Core. */
+const APPLE_PCORE_TUPAI_PART_NUM: u64 = 0x6b; // A18
+
+/* H16S Brava S e-Core. */
+const APPLE_ECORE_BRAVA_S: u64 = 0x54;
+
+/* H16S Brava S p-Core. */
+const APPLE_PCORE_BRAVA_S: u64 = 0x55;
+
+/* H16C Brava C e-Core. */
+const APPLE_ECORE_BRAVA_C: u64 = 0x58;
+
+/* H16C Brava C p-Core. */
+const APPLE_PCORE_BRAVA_C: u64 = 0x59;
+
 const ARM_NEOVERSE_E1_PART_NUM: u64 = 0xD4A;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
 const ARM_NEOVERSE_N2_PART_NUM: u64 = 0xD49;
@@ -163,8 +197,11 @@ const AMPERE_1A_PART_NUM: u64 = 0xac4;
 const AMPERE_1B_PART_NUM: u64 = 0xac5;
 
 const FUJITSU_A64FX_PART_NUM: u64 = 0x001;
+const FUJITSU_MONAKA_PART_NUM: u64 = 0x003;
 
 const MICROSOFT_AZURE_COBALT100_PART_NUM: u64 = 0xd49;
+
+const NVIDIA_OLYMPUS_PART_NUM: u64 = 0x010;
 
 #[cfg(test)]
 mod tests {
@@ -312,8 +349,12 @@ declare_cores!(
     (AppleA14,   Apple,   Or(APPLE_ICESTORM_PART_NUM, APPLE_FIRESTORM_PART_NUM)),
     (AppleA15,   Apple,   Or(APPLE_BLIZZARD_PART_NUM, APPLE_AVALANCHE_PART_NUM)),
     (AppleA16,   Apple,   Or(APPLE_SAWTOOTH_PART_NUM, APPLE_EVEREST_PART_NUM)),
+    (AppleA18,   Apple,   Or(APPLE_ECORE_TUPAI_PART_NUM, APPLE_PCORE_TUPAI_PART_NUM)),
+    (AppleA18Pro,   Apple,   Or(APPLE_ECORE_TAHITI_PART_NUM, APPLE_PCORE_TAHITI_PART_NUM)),
     (A64FX,      Fujitsu, One(FUJITSU_A64FX_PART_NUM)),
+    (MONAKA,     Fujitsu, One(FUJITSU_MONAKA_PART_NUM)),
     (MicrosoftAzureCobalt100, Microsoft, One(MICROSOFT_AZURE_COBALT100_PART_NUM)),
+    (NvidiaOlympus, Nvidia, One(NVIDIA_OLYMPUS_PART_NUM)),
 );
 
 // https://www.anandtech.com/show/21116/apple-announces-m3-soc-family-m3-m3-pro-and-m3-max-make-their-marks

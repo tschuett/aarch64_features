@@ -100,7 +100,7 @@
 //! - [x] Armv9.3-A
 //! - [ ] Armv9.4-A
 //! - [ ] Armv9.5-A
-//! - [ ] Armv9.6-A
+//! - [x] Armv9.6-A
 //!
 //! # Usage
 //! This crate is [on crates.io](https://crates.io/crates/aarch64_features) and can be
@@ -562,20 +562,76 @@ pub enum Feature {
     FEAT_SPE_SME,
 
     // Armv9.6
+    /// Activity Monitors External Control Register
+    FEAT_AMU_EXTACR,
     /// Compare and Branch instructions
     FEAT_CMPBR,
-    /// Large System Float Extension
-    FEAT_LSFE,
-    /// Enhanced nested virtualization support
-    FEAT_NV2p1,
-    /// Scalable Matrix Extension version 2.2
-    FEAT_SME2p2,
+    /// 8-bit floating-point matrix multiply-accumulate to half-precision
+    FEAT_F8F16MM,
+    /// 8-bit floating-point matrix multiply-accumulate to single-precision
+    FEAT_F8F32MM,
     ///Floating-Point to/from Integer in Scalar FP register
     FEAT_FPRCVT,
+    /// Trapping ID register accesses to EL3
+    FEAT_IDTE3,
+    /// LS64 for Write-back cacheable memory
+    FEAT_LS64WB,
+    /// Large System Float Extension
+    FEAT_LSFE,
+    /// Unprivileged Load Store
+    FEAT_LSUI,
+    /// MPAM Default Resource Control
+    FEAT_MPAM_MSC_DCTRL,
+    /// MPAM Domains PARTID translation
+    FEAT_MPAM_MSC_DOMAINS,
+    /// MPAM PE-side Bandwidth Controls
+    FEAT_MPAM_PE_BW_CTRL,
+    /// Enhanced nested virtualization support
+    FEAT_NV2p1,
+    /// Outer Cacheable Cache Maintenance Operation
+    FEAT_OCCMO,
+    /// Producer-Consumer Data Placement Hints
+    FEAT_PCDPHINT,
+    /// Reserving PMU event counters for external agents
+    FEAT_PMUv3_EXTPMN,
+    /// Point of Physical Storage
+    FEAT_PoPS,
+    /// RME Granular Data Isolation extension
+    FEAT_RME_GDI,
+    /// RME Granule Protection Check 3 Extension
+    FEAT_RME_GPC3,
+    /// Scalable Matrix Extension version 2.2
+    FEAT_SME2p2,
+    /// Quarter-tile outer product instructions
+    FEAT_SME_MOP4,
     /// Structured sparsity outer product instructions
     FEAT_SME_TMOP,
+    /// SPE Profiling exception extension
+    FEAT_SPE_EXC,
+    /// Statistical Profiling physical addressing mode extension
+    FEAT_SPE_nVM,
+    /// Statistical Profiling Extension version 1.5
+    FEAT_SPEv1p5,
+    /// Bitwise System Register Write Masks
+    FEAT_SRMASK,
+    /// Streaming SVE Mode Advanced Encryption Standard and 128-bit polynomial multiply long instructions
+    FEAT_SSVE_AES,
+    /// Streaming Scalable Vector Bit Permutes instructions
+    FEAT_SSVE_BitPerm,
     /// Scalable Vector Extensions version 2.2
     FEAT_SVE2p2,
+    /// SVE multi-vector Advanced Encryption Standard and 128-bit polynomial multiply long instructions
+    FEAT_SVE_AES2,
+    /// BFloat16 Floating-Point Adjust Exponent
+    FEAT_SVE_BFSCALE,
+    /// SVE Half-precision floating-point matrix multiply-accumulate to single-precision
+    FEAT_SVE_F16F32MM,
+    /// Trace Buffer Profiling exception extension
+    FEAT_TRBE_EXC,
+    /// Trace Buffer Extension version 1.1
+    FEAT_TRBEv1p1,
+    /// Injection of Undefined Instruction exceptions
+    FEAT_UINJ,
 
     /// Advanced SIMD Extension
     FEAT_AdvSIMD,
