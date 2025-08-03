@@ -554,12 +554,72 @@ pub enum Feature {
     FEAT_SVE2p1,
 
     // Armv9.5
-    /// Lookup table instructions with 2-bit and 4-bit indices
-    FEAT_LUT,
+    /// Support for concurrent use of two ASIDs
+    FEAT_ASID2,
+    /// Breakpoint and watchpoint enhancements 2
+    FEAT_BWE2,
+    /// Instruction-only Checked Pointer Arithmetic
+    FEAT_CPA,
+    /// Checked Pointer Arithmetic
+    FEAT_CPA2,
+    /// Delegated SError exception injection
+    FEAT_E3DSE,
+    /// Enhanced Translation Synchronization
+    FEAT_ETS3,
     /// Floating-point maximum and minimum absolute value instructions
     FEAT_FAMINMAX,
-    /// Statisical Profiling extensions for SME
+    /// Fine-Grained Write Trap EL3
+    FEAT_FGWTE3,
+    /// FP8 convert instructions
+    FEAT_FP8,
+    /// FP8 2-way dot product to half-precision instructions    FEAT_FP8DOT2,
+    FEAT_FP8DOT2,
+    /// FP8 4-way dot product to single-precision instructions
+    FEAT_FP8DOT4,
+    /// FP8 multiply-accumulate to half-precision and single-precision
+    FEAT_FP8FMA,
+    /// Floating-point Mode Register
+    FEAT_FPMR,
+    /// Hardware accelerator for cleaning Dirty state
+    FEAT_HACDBS,
+    /// Hardware Dirty state tracking structure
+    FEAT_HDBSS,
+    /// Lookup table instructions with 2-bit and 4-bit indices
+    FEAT_LUT,
+    /// Pointer authentication instructions that allow signing of LR using SP and PC as diversifiers
+    FEAT_PAuth_LR,
+    /// Performance Monitors extensions for SME
+    FEAT_PMUv3_SME,
+    /// Performance Monitors event counter linking extension
+    FEAT_PMUv3_TH2,
+    /// RME Granule Protection Check 2 Extension
+    FEAT_RME_GPC2,
+    /// SME2 ZA-targeting FP8 multiply-accumulate, dot product, and outer product to half-precision instructions
+    FEAT_SME_F8F16,
+    /// SME2 ZA-targeting FP8 multiply-accumulate, dot product, and outer product to single-precision instructions
+    FEAT_SME_F8F32,
+    /// Lookup table instructions with 4-bit indices and 8-bit elements
+    FEAT_SME_LUTv2,
+    ///  Statistical Profiling alternate clock domain extension
+    FEAT_SPE_ALTCLK,
+    /// Statistical Profiling extended filtering by type
+    FEAT_SPE_EFT,
+    /// Statistical Profiling floating-point and SIMD flag extension
+    FEAT_SPE_FPF,
+    /// Statisical Profiling extensions for SME    FEAT_SPE_SME,
     FEAT_SPE_SME,
+    /// System Performance Monitors Extension version 2
+    FEAT_SPMU2,
+    /// SVE FP8 2-way dot product to half-precision instructions in Streaming SVE mode
+    FEAT_SSVE_FP8DOT2,
+    /// SVE2 FP8 4-way dot product to single-precision instructions in Streaming SVE mode
+    FEAT_SSVE_FP8DOT4,
+    /// SVE2 FP8 multiply-accumulate to half-precision and single-precision instructions in Streaming SVE mode
+    FEAT_SSVE_FP8FMA,
+    /// Enhanced Software Step Extension
+    FEAT_STEP2,
+    /// TLBI VMALL for Dirty state
+    FEAT_TLBIW,
 
     // Armv9.6
     /// Activity Monitors External Control Register
@@ -739,66 +799,10 @@ pub enum Feature {
     FEAT_TRBE_EXT,
 
     // 2023 Architecture Extensions
-    /// Support for concurrent use of two ASIDs
-    FEAT_ASID2,
-    /// Breakpoint and watchpoint enhancements 2
-    FEAT_BWE2,
-    /// Instruction-only Checkped Pointer Arithmetic
-    FEAT_CPA,
-    /// Checked Pointer Arithmetic
-    FEAT_CPA2,
     /// Programming of HCR_EL2.E2H
     FEAT_E2HO,
-    /// Delegated SError exception injection
-    FEAT_E3DSE,
-    /// Fine-Grained Write Trap EL3,
-    FEAT_FGWTE3,
     /// FP8 convert instructions
     FP8,
-    /// FP8 multply-accumulate half-precision and single-precision
-    FEAT_FP8FMA,
-    /// FP8 2-way dot product to half-precision instructions
-    FEAT_FP8DOT2,
-    /// FP8 4-way dot product to half-precision instructions
-    FEAT_FP8DOT4,
-    /// Floating-point Mode Register
-    FEAT_FPMR,
-    /// Hardware accelerator for cleaning Dirty state
-    FEAT_HACDBS,
-    /// Hardware Dirty state tracking Structure
-    FEAT_HDBSS,
-    /// Pointer authentication instructions that allow signing of LR using SP and PC as diversificers
-    FEAT_PAuth_LR,
-    /// Performance Monitors extensions for SME,
-    FEAT_PMUv3_SME,
-    /// Performance Monitors event counter linking extension,
-    FEAT_PMUv3_TH2,
-    /// RME Granule Protection Check 2 Extension
-    FEAT_RME_GPC2,
-    /// SME2 ZA-targeting FP8 multiply-accumulate, dot product, and outer product to half-precision instructions
-    FEAT_SME_F8F16,
-    /// SME2 ZA-targeting FP8 multiply-accumulate, dot product, and outer product to single-precision instructions
-    FEAT_SME_F8F32,
-    /// Lookup table instructions with 4-bit indices and 8-bit elements
-    FEAT_SME_LUTv2,
-    /// Statistical Profiling alternate clock domain extension
-    FEAT_SPE_ALTCLK,
-    /// Statistical Profiling extended filtering by type
-    FEAT_SPE_EFT,
-    /// Statistical Profiling floating-point flag extension
-    FEAT_SPE_FPF,
-    /// Sytem Performance Monitors Extension version 2
-    //    FEAT_SPMU,
-    /// SVE2 FP8 4-way dot product to single-precions instructions in Streaming SVE mode
-    FEAT_SSVE_FP8DOT4,
-    /// SVE2 FP8 2-way dot product to half-precions instructions in Streaming SVE mode
-    FEAT_SSVE_FP8DOT2,
-    /// SVE2 FP8 multiply-accumulate to half-preciosn and single-precison instructions in Streaming SVE mode
-    FEAT_SSVE_FP8FMA,
-    /// Enhanced Software Step Extion
-    FEAT_STEP2,
-    /// TLBI VMALL for Dirty state
-    FEAT_TLBIW,
 }
 
 /// test for all aarch64 features

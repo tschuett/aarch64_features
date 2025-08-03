@@ -1,4 +1,4 @@
-![Rust](https://github.com/tschuett/aarch64_features/workflows/Rust/badge.svg) ![MSRV](https://img.shields.io/badge/msrv-1.73-red)
+![Rust](https://github.com/tschuett/aarch64_features/workflows/Rust/badge.svg) ![MSRV](https://img.shields.io/badge/msrv-1.88-red)
 
 ## aarch64_features - A feature detector for AArch64 features, i.e., FEAT_LSE?
 
