@@ -7,7 +7,7 @@ pub(super) fn has_sve() -> bool {
     // SVE, bits [35:32]
     let shifted_bits = tmp >> 32;
     let shifted_bits = shifted_bits & 0b1111;
-    return shifted_bits == 0b0001;
+    shifted_bits == 0b0001
 }
 
 pub(super) fn has_sme() -> bool {
@@ -19,7 +19,7 @@ pub(super) fn has_sme() -> bool {
     // SME, bits [27:24]
     let shifted_bits = tmp >> 24;
     let shifted_bits = shifted_bits & 0b1111;
-    return shifted_bits == 0b0001;
+    shifted_bits == 0b0001
 }
 
 pub(super) fn is_streaming_sve_mode() -> bool {
@@ -30,7 +30,7 @@ pub(super) fn is_streaming_sve_mode() -> bool {
     };
     // SM, bit [0]
     let shifted_bits = tmp & 0b0001;
-    return shifted_bits == 0b1;
+    shifted_bits == 0b1
 }
 
 pub(super) fn get_za_size() -> Option<u64> {
@@ -42,7 +42,7 @@ pub(super) fn get_za_size() -> Option<u64> {
         return Some((sve_len / 8) * (sve_len / 8));
     }
 
-    return None;
+    None
 }
 
 pub(super) fn get_sve_len() -> Option<u64> {
@@ -60,5 +60,5 @@ pub(super) fn get_sve_len() -> Option<u64> {
     // LEN, bits [3:0]
 
     let len = tmp & 0b1111;
-    return Some((len + 1) * 128);
+    Some((len + 1) * 128)
 }

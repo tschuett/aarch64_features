@@ -7,7 +7,7 @@
     rust_2018_idioms,
     unreachable_pub,
     future_incompatible,
-    unused_tuple_struct_fields
+    dead_code
 )]
 #![deny(
     clippy::as_conversions,
@@ -1004,3 +1004,5 @@ mod tests {
 // https://reviews.llvm.org/D138010
 
 // https://developer.arm.com/downloads/-/exploration-tools/feature-names-for-a-profile
+
+// https://developer.arm.com/documentation/109697/2025_06/Feature-descriptions?lang=en
