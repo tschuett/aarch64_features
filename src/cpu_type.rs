@@ -69,6 +69,10 @@ pub enum Core {
     AppleA18,
     /// Apple A18 Pro
     AppleA18Pro,
+    /// Apple A19
+    AppleA19,
+    /// Apple A19 Pro
+    AppleA19Pro,
     /// Microsoft Azure Cobalt 100 (custom N2)
     MicrosoftAzureCobalt100,
     /// Nvidia Olympus
@@ -183,6 +187,24 @@ const APPLE_ECORE_BRAVA_C: u64 = 0x58;
 
 /* H16C Brava C p-Core. */
 const APPLE_PCORE_BRAVA_C: u64 = 0x59;
+
+/* H17G Hidra e-Core. */
+const APPLE_ECORE_HIDRA_PART_NUM: u64 = 0x62;
+
+/* H17G Hidra p-Core. */
+const APPLE_PCORE_HIDRA_PATZ_NUM: u64 = 0x63;
+
+/* H18P Thera e-Core. */
+const APPLE_ECORE_THERA_PART_NUM: u64 = 0x70; // A19 pro
+
+/* H18P Thera p-Core. */
+const APPLE_PCORE_THERA_CPU_PART: u64 = 0x71; // A19 pro
+
+/* H18P Thera e-Core. */
+const APPLE_ECORE_TILOS_CPU_PART: u64 = 0x7a; // A19
+
+/* H18P Thera p-Core. */
+const APPLE_PCORE_TILOS_CPU_PART: u64 = 0x7b; // A19
 
 const ARM_NEOVERSE_E1_PART_NUM: u64 = 0xD4A;
 const ARM_NEOVERSE_N1_PART_NUM: u64 = 0xD0C;
